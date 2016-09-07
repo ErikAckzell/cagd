@@ -15,9 +15,30 @@
 \begin{document}
 
 \maketitle
+\section*{Task 1}
+UNSURE ABOUT $\mathbb{R}^2$ AND $\mathbb{E}^2$.\\
+In this task we want to find the affine map $\Phi:\mathbb{E}^2 \rightarrow \mathbb{E}^2$ such that \begin{equation}
+\begin{aligned}
+(0,0)&\overset{\Phi}{\mapsto}(1,0)\\
+(1,0)&\overset{\Phi}{\mapsto}(1,-1)\\
+(1,1)&\overset{\Phi}{\mapsto}(3,-3)\\
+(0,1)&\overset{\Phi}{\mapsto}(3,-2)
+\end{aligned}
+\end{equation}
+We look for $\Phi$ on the form $\Phi(x) = Ax + v$, $A\in \mathbb{R}^{2\times 2}$, $v\in \mathbb{R}^2$. To determine $A$ and $v$ we solve a series of equations.\\
+Set \begin{equation*}
+A=\left[\begin{array}{cc}
+a_{11}&a_{12}\\
+a_{21}&a_{22}
+\end{array}\right], \quad v=\left[\begin{array}{c}
+v_1\\
+v_2
+\end{array}\right]
+\end{equation*}
+We have that 
 
 \section*{Task 3}
-We want to show that linear interpolation $\Phi : \mathbb{R} \mapsto \mathbb{E}^2$ is an affine map.\\
+We want to show that linear interpolation $\Phi : \mathbb{R} \rightarrow \mathbb{E}^2$ is an affine map.\\
 \underline{\textbf{Proof:}} Let $p,q$ be arbitrary points in $\mathbb{E}^2$. Then \begin{equation*}
 \Phi (t) = (1-t)p + tq, \quad t\in \mathbb{R}
 \end{equation*}
