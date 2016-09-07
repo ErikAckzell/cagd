@@ -1,0 +1,34 @@
+\documentclass[]{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{mdframed}
+\usepackage{paralist}
+
+\title{CAGD - Homework 1}
+\author{Josefine Stål \& Erik Ackzell}
+
+\begin{document}
+
+\maketitle
+
+\section*{Task 3}
+We want to show that linear interpolation $\Phi : \mathbb{R} \mapsto \mathbb{E}^2$ is an affine map.\\
+\underline{\textbf{Proof:}} Let $p,q$ be arbitrary points in $\mathbb{E}^2$. Then \begin{equation*}
+\Phi (t) = (1-t)p + tq, \quad t\in \mathbb{R}
+\end{equation*}
+is the linear interpolation of $p$ and $q$. Let $x\in \mathbb{R}$ be a barycentric combination, i.e. $x=\sum_{i=1}^{n}\alpha_i x_i$ with $x_i, \alpha_i\in \mathbb{R}$ and $\sum_{i=1}^{n}\alpha_i = 1$. Then \begin{equation*}
+\begin{aligned}
+\Phi (x) &= \Phi (\sum_{i=1}^{n}\alpha_i x_i)\\
+&=(1-\sum_{i=1}^{n}\alpha_i x_i)p + (\sum_{i=1}^{n}\alpha_i x_i)p\\
+&\overset{(i)}{=}(\sum_{i=1}^{n}\alpha_i-\sum_{i=1}^{n}\alpha_i x_i)p + \sum_{i=1}^{n}\alpha_i x_ip\\
+&=\sum_{i=1}^{n}\alpha_i[(1-x_i)p + x_iq]\\
+&=\sum_{i=1}^{n}\alpha_i\Phi(x_i)
+\end{aligned}
+\end{equation*}
+where $(i)$ follows from $\sum_{i=1}^{n}\alpha_i=1$. This is what we wanted to show. $\square$
+\end{document}
