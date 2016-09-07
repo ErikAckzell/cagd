@@ -87,7 +87,31 @@ a_{12}=2\\
 a_{22}=-2
 \end{array} \right.\label{third}
 \end{equation}
-Insert $a_{12}=2$
+Insert $a_{12}=2$, $a_{22}=-2$ and continue\begin{equation}
+\left[\begin{array}{cc}
+0&2\\
+-1-v_2&-2
+\end{array}\right]\left[\begin{array}{c}
+0\\
+1
+\end{array}\right] + \left[\begin{array}{c}
+1\\
+v_2
+\end{array}\right] = \left[\begin{array}{c}
+3\\
+-2
+\end{array}\right]\Rightarrow v_2 = 0\label{fourth}
+\end{equation}
+Thus, \begin{equation*}
+A=\left[\begin{array}{cc}
+0&2\\
+-1&-2
+\end{array}\right], \quad v=\left[\begin{array}{c}
+1\\
+0
+\end{array}\right]
+\end{equation*}
+and we are done. $\square$
 \section*{Task 3}
 We want to show that linear interpolation $\Phi : \mathbb{R} \rightarrow \mathbb{E}^2$ is an affine map.\\
 \underline{\textbf{Proof:}} Let $p,q$ be arbitrary points in $\mathbb{E}^2$. Then \begin{equation*}
