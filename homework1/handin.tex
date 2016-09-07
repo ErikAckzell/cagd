@@ -17,14 +17,14 @@
 \maketitle
 \section*{Task 1}
 UNSURE ABOUT $\mathbb{R}^2$ AND $\mathbb{E}^2$.\\
-In this task we want to find the affine map $\Phi:\mathbb{E}^2 \rightarrow \mathbb{E}^2$ such that \begin{equation}
+In this task we want to find the affine map $\Phi:\mathbb{E}^2 \rightarrow \mathbb{E}^2$ such that \begin{equation*}
 \begin{aligned}
 (0,0)&\overset{\Phi}{\mapsto}(1,0)\\
 (1,0)&\overset{\Phi}{\mapsto}(1,-1)\\
 (1,1)&\overset{\Phi}{\mapsto}(3,-3)\\
 (0,1)&\overset{\Phi}{\mapsto}(3,-2)
 \end{aligned}
-\end{equation}
+\end{equation*}
 We look for $\Phi$ on the form $\Phi(x) = Ax + v$, $A\in \mathbb{R}^{2\times 2}$, $v\in \mathbb{R}^2$. To determine $A$ and $v$ we solve a series of equations.\\
 Set \begin{equation*}
 A=\left[\begin{array}{cc}
@@ -35,8 +35,59 @@ v_1\\
 v_2
 \end{array}\right]
 \end{equation*}
-We have that 
-
+We now solve a series of equations to determine $a_{11}, a_{12}, a_{21}, a_{22}, v_1, v_2$.
+\begin{equation}
+\left[\begin{array}{cc}
+a_{11}&a_{12}\\
+a_{21}&a_{22}
+\end{array}\right]\left[\begin{array}{c}
+0\\
+0
+\end{array}\right] + \left[\begin{array}{c}
+v_1\\
+v_2
+\end{array}\right] = \left[\begin{array}{c}
+1\\
+0
+\end{array}\right]\Rightarrow v_1=1\label{first}
+\end{equation}
+Insert $v_1 = 1$ and continue \begin{equation}
+\left[\begin{array}{cc}
+a_{11}&a_{12}\\
+a_{21}&a_{22}
+\end{array}\right]\left[\begin{array}{c}
+1\\
+0
+\end{array}\right] + \left[\begin{array}{c}
+1\\
+v_2
+\end{array}\right] = \left[\begin{array}{c}
+1\\
+-1
+\end{array}\right]\Rightarrow \left\{\begin{array}{c}
+a_{11}=0\\
+a_{21}=-1-v_2
+\end{array} \right.\label{second}
+\end{equation}
+Insert $a_{11}=0$, $a_{21}=-1-v_2$ and continue \begin{equation}
+\left[\begin{array}{cc}
+0&a_{12}\\
+-1-v_2&a_{22}
+\end{array}\right]\left[\begin{array}{c}
+1\\
+1
+\end{array}\right] + \left[\begin{array}{c}
+1\\
+v_2
+\end{array}\right] = \left[\begin{array}{c}
+3\\
+-3
+\end{array}\right]\Rightarrow \left\{\begin{array}{c}
+a_{12}=2\\
+a_{22}=-2
+\end{array} \right.\label{third}
+\end{equation}
+Insert $a_{12}=2$
 \section*{Task 3}
 We want to show that linear interpolation $\Phi : \mathbb{R} \rightarrow \mathbb{E}^2$ is an affine map.\\
 \underline{\textbf{Proof:}} Let $p,q$ be arbitrary points in $\mathbb{E}^2$. Then \begin{equation*}
