@@ -26,6 +26,7 @@ def show_hull(points):
         pylab.plot(xvals[i], yvals[i], 'bo')
         for j in range(i + 1, len(points)):
             pylab.plot([xvals[i], xvals[j]], [yvals[i], yvals[j]], 'r')
+    pylab.plot(xvals[len(points) - 1], yvals[len(points) - 1], 'bo')
     # Padding the plot
     padding = 0.1
     pylab.xlim([min(xvals) - padding, max(xvals) + padding])
