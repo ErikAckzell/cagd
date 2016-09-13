@@ -23,12 +23,7 @@ def plotBernstein(n,t0=0,t1=1,steps=30):
     tgrid = numpy.linspace(t0,t1,steps)
 
     # Evaluate the Bernstein polynomials at each grid point
-    ugrid = [[] for i in range(n+1)]
-    for t in tgrid:
-        polVal = bernsteinPol(n,t)
-        # Save each value of B_j separately
-        for ind, val in enumerate(polVal):
-            ugrid[ind].append(val)
+    ugrid = zip(*[bernsteinPol(n,t) for t in tgrid])
 
     # Plot each polynomial
     for ind, i in enumerate(ugrid):

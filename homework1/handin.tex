@@ -8,6 +8,28 @@
 \usepackage{graphicx}
 \usepackage{mdframed}
 \usepackage{paralist}
+\usepackage{listings}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+
+\lstset{
+  language=Python,
+  breaklines=true,
+  showstringspaces=false,
+  frame=single,
+  aboveskip=3mm,
+  belowskip=3mm,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{dkgreen},
+  breakatwhitespace=true,
+  tabsize=3
+}
 
 \title{CAGD - Homework 1}
 \author{Josefine St{\aa}l \& Erik Ackzell}
@@ -111,6 +133,8 @@ Thus, \begin{equation*}
 \end{array}\right]
 \end{equation*}
 and we are done. $\square$
+
+
 \section*{Task 2}
 By connecting all the points in a given set of points in the plane, the convex hull of a set points can be shown. In the figure below, the convex hull of the set of points \begin{equation*}
 \left(\begin{array}{c}
@@ -134,6 +158,8 @@ can be seen. The convex hull consists of all the points contained within the out
 \begin{figure}[h!]
 \includegraphics[scale=0.7]{convex_hull}
 \end{figure}
+
+\newpage
 \section*{Task 3}
 We want to show that linear interpolation $\Phi : \mathbb{R} \rightarrow \mathbb{E}^2$ is an affine map.\\
 \underline{\textbf{Proof:}} Let $p,q$ be arbitrary points in $\mathbb{E}^2$. Then \begin{equation*}
@@ -162,5 +188,15 @@ By constructing a code that evaluates the Bernstein Polynomials in a given value
 \includegraphics[scale=0.4]{Bernstein_deg3}
 \includegraphics[scale=0.4]{Bernstein_deg4}
 \end{figure}
+
+\newpage
+\section*{Appendix I}
+Code from task 2.
+\lstinputlisting[firstline=10]{task2.py}
+
+\newpage
+\section*{Appendix II}
+Code from task 4. 
+\lstinputlisting{task4.py}
 
 \end{document}
