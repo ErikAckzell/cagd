@@ -33,11 +33,20 @@ class beziercurve(object):
                         t * deCasteljauArray[i, (j-1)*2:(j-1)*2+2])
         return deCasteljauArray
 
-    def degree_elevation(self, increase):
-        pass
+    def degree_elevation(self):
+        n = len(self.controlpoints)
+        new_controlpoints = scipy.zeros((n + 1, 2))
+        new_controlpoints[0] = numpy.copy(self.controlpoints[0])
+        new_controlpoints[-1] = numpy.copy(self.controlpoints[-1])
+        for i in range(1, n):
+            new_controlpoints[i] = (
+                        (1 - 1/n) * numpy.copy(self.controlpoints[i]) +
+                        (1/n) * numpy.copy(self.controlpoints[i - 1])
+                                   )
+        return beziercurve(new_controlpoints)
 
-    def plot(self,
-             label=None, pointlabel=None, points=300, controlpoints=True):
+    def plot(self, label=None, pointlabel=None, points=300, controlpoints=True,
+             title=None):
         """
         Method to plot the spline.
         points (int): number of points to use when plotting the spline
@@ -74,8 +83,12 @@ controlpoints = scipy.array([[-1, 0],
                              [2, 0]])
 
 curve = beziercurve(controlpoints=controlpoints)
+#
+#curve1, curve2 = curve.subdivision(0.4)
+#
+#curve1.plot(label='curve1', pointlabel='points1')
+#curve2.plot(label='curve2', pointlabel='points2')
 
-curve1, curve2 = curve.subdivision(0.4)
-
-curve1.plot(label='curve1', pointlabel='points1')
-curve2.plot(label='curve2', pointlabel='points2')
+curve.plot()
+curve3 = curve.degree_elevation()
+curve3.plot()
