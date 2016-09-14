@@ -40,8 +40,8 @@ class beziercurve(object):
         new_controlpoints[-1] = numpy.copy(self.controlpoints[-1])
         for i in range(1, n):
             new_controlpoints[i] = (
-                        (1 - 1/n) * numpy.copy(self.controlpoints[i]) +
-                        (1/n) * numpy.copy(self.controlpoints[i - 1])
+                        (1 - i/n) * numpy.copy(self.controlpoints[i]) +
+                        (i/n) * numpy.copy(self.controlpoints[i - 1])
                                    )
         return beziercurve(new_controlpoints)
 
@@ -62,33 +62,19 @@ class beziercurve(object):
         pylab.legend()
         pylab.title(title)
 
-#controlpoints = scipy.array([[40, 17],
-#                             [20, 0],
-#                             [18, 8],
-#                             [57, -27],
-#                             [8, -77],
-#                             [-23, -65],
-#                             [-100, -15],
-#                             [-23, 7],
-#                             [-40, 20],
-#                             [-15, 10]])
-
-#controlpoints = scipy.array([[x * scipy.cos(x), x * scipy.sin(x)]
-#                            for x in scipy.linspace(0, 8 * scipy.pi, 35)])
-
-#controlpoints = scipy.array([[scipy.cos(x), scipy.sin(x)]
-#                            for x in scipy.linspace(0, 2 * scipy.pi, 10)])
+#### SUBDIVISION ###
 controlpoints = scipy.array([[-1, 0],
                              [0, 1],
                              [2, 0]])
 
 curve = beziercurve(controlpoints=controlpoints)
-#
-#curve1, curve2 = curve.subdivision(0.4)
-#
+
+curve1, curve2 = curve.subdivision(0.4)
+
 #curve1.plot(label='curve1', pointlabel='points1')
 #curve2.plot(label='curve2', pointlabel='points2')
 
-curve.plot()
-curve3 = curve.degree_elevation()
+### DEGREE ELEVATION ###
+#curve.plot()
+curve3 = curve.degree_elevation().degree_elevation()
 curve3.plot()
