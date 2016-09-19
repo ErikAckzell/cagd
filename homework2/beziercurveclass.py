@@ -14,38 +14,23 @@ class rectangle(object):
         self.ylow = ylow
         self.yhigh = yhigh
 
+    def __equals__(self, other):
+        if (self.corners == other.corners).all():
+            return True
+        else:
+            return False
+
     def plot(self):
         rectangle_update = scipy.vstack((self.corners, self.corners[0]))
         pylab.plot(rectangle_update[:, 0], rectangle_update[:, 1])
 
-    def half_along_longest_axis(self):
-        if (self.xhigh - self.xlow) < (self.yhigh - self.ylow):
-            ylow1 = self.ylow
-            yhigh1 = 0.5 * (self.yhigh - self.ylow)
-            ylow2 = yhigh1
-            yhigh2 = self.yhigh
-            rectangle1 = rectangle(xlow=self.xlow,
-                                   xhigh=self.xhigh,
-                                   ylow=ylow1,
-                                   yhigh=yhigh1)
-            rectangle2 = rectangle(xlow=self.xlow,
-                                   xhigh=self.xhigh,
-                                   ylow=ylow2,
-                                   yhigh=yhigh2)
-        else:
-            xlow1 = self.xlow
-            xhigh1 = 0.5 * (self.xhigh - self.xlow)
-            xlow2 = xhigh1
-            xhigh2 = self.xhigh
-            rectangle1 = rectangle(xlow=xlow1,
-                                   xhigh=xhigh1,
-                                   ylow=self.ylow,
-                                   yhigh=self.yhigh)
-            rectangle2 = rectangle(xlow=xlow2,
-                                   xhigh=xhigh2,
-                                   ylow=self.ylow,
-                                   yhigh=self.yhigh)
-        return (rectangle1, rectangle2)
+    def get_diagonal_length(self):
+        return scipy.linalg.norm(self.corners[0] - self.corners[2], 2)
+
+    def get_center(self):
+        xval = 0.5 * (self.xlow + self.xhigh)
+        yval = 0.5 * (self.ylow + self.yhigh)
+        return scipy.array([xval, yval])
 
 
 class line(object):
@@ -67,8 +52,8 @@ class line(object):
     def crosses_line_segment(self, segmentpoints):
         if segmentpoints[0, 1] == segmentpoints[1, 1]:
             if (
-                  (self.Lx(segmentpoints[0, 0]) - segmentpoints[0, 0]) *
-                  (self.Lx(segmentpoints[1, 0]) - segmentpoints[0, 0])) <= 0:
+                  (self.Lx(segmentpoints[0, 0]) - segmentpoints[0, 1]) *
+                  (self.Lx(segmentpoints[1, 0]) - segmentpoints[0, 1])) <= 0:
                 return True
             else:
                 return False
@@ -115,7 +100,8 @@ class beziercurve(object):
         controlpoints1 = scipy.array([deCasteljauArray[i, 2 * i:2 * i+2]
                                       for i in range(len(self.controlpoints))])
         controlpoints2 = scipy.array([deCasteljauArray[-1, 2 * i:2 * i+2]
-                                      for i in range(len(self.controlpoints))])[::-1]
+                                      for i in range(len(self.controlpoints))])
+        controlpoints2 = controlpoints2[::-1]
         curve1 = beziercurve(controlpoints1)
         curve2 = beziercurve(controlpoints2)
 
@@ -132,71 +118,55 @@ class beziercurve(object):
                         t * deCasteljauArray[i, (j-1)*2:(j-1)*2+2])
         return deCasteljauArray
 
-    def get_rectangle(self):
-        xlow = min(self.controlpoints[:, 0])
-        xhigh = max(self.controlpoints[:, 0])
-        ylow = min(self.controlpoints[:, 1])
-        yhigh = max(self.controlpoints[:, 1])
-        return scipy.array([[xlow, ylow],
-                           [xlow, yhigh],
-                           [xhigh, yhigh],
-                           [xhigh, ylow]])
-
-    def line_functions_from_points(self, p, q):
-        Lxcoeff = scipy.polyfit([p[0], q[0]], [p[1], q[1]], 1)
-        Lycoeff = scipy.polyfit([p[1], q[1]], [p[0], q[0]], 1)
-
-        def Lx(x):
-            return Lxcoeff[0] * x + Lxcoeff[1]
-
-        def Ly(y):
-            return Lycoeff[0] * y + Lycoeff[1]
-
-        return Lx, Ly
-
-    def line_crosses_line_segment(self, linefunctions, segmentpoints):
-        if segmentpoints[0, 1] == segmentpoints[1, 1]:
-            Lx = linefunctions[0]
-            if (
-                  (Lx(segmentpoints[0, 0]) - segmentpoints[0, 0]) *
-                  (Lx(segmentpoints[1, 0]) - segmentpoints[0, 0])) <= 0:
-                return True
-            else:
-                return False
+    def intersects_line(self, line1):
+        rectangle1 = rectangle(xlow=self.xlow,
+                               xhigh=self.xhigh,
+                               ylow=self.ylow,
+                               yhigh=self.yhigh)
+        if not line1.intersects_rectangle(rectangle1):
+            return False
         else:
-            Ly = linefunctions[1]
-            if (
-                  (Ly(segmentpoints[0, 1]) - segmentpoints[0, 0]) *
-                  (Ly(segmentpoints[1, 1]) - segmentpoints[0, 0])) <= 0:
-                return True
-            else:
-                return False
-
-    def line_intersects_rectangle(self, rectangle, linefunctions):
-        result = False
-        for i in range(3):
-            segmentpoints = rectangle[i:i+2]
-            if self.line_crosses_line_segment(linefunctions=linefunctions,
-                                              segmentpoints=segmentpoints):
-                result = True
-        segmentpoints = scipy.array([rectangle[0], rectangle[3]])
-        if self.line_crosses_line_segment(linefunctions=linefunctions,
-                                          segmentpoints=segmentpoints):
-            result = True
-        return result
-
-    def plot_rectangle(self):
-        rectangle = self.get_rectangle()
-        rectangle_update = scipy.vstack((rectangle, rectangle[0]))
-        pylab.plot(rectangle_update[:, 0], rectangle_update[:, 1])
-
-    def plot_line(self, linefunctions):
-        Lx = linefunctions[0]
-        xmin = min(self.controlpoints[:, 0])
-        xmax = max(self.controlpoints[:, 0])
-        xlist = scipy.linspace(xmin, xmax, 200)
-        ylist = [Lx(x) for x in xlist]
-        pylab.plot(xlist, ylist)
+            rectangle_list = [rectangle1]
+            rectangle1.plot()
+            intersection_list = []
+            curve_list = [self]
+            while rectangle_list:
+                updated_curve_list = []
+                updated_rectangle_list = []
+                for C in curve_list:
+                    C1, C2 = C.subdivision(t=0.5)
+                    R1 = rectangle(xlow=C1.xlow,
+                                   xhigh=C1.xhigh,
+                                   ylow=C1.ylow,
+                                   yhigh=C1.yhigh)
+                    R2 = rectangle(xlow=C2.xlow,
+                                   xhigh=C2.xhigh,
+                                   ylow=C2.ylow,
+                                   yhigh=C2.yhigh)
+                    R1.plot()
+                    R2.plot()
+                    for RC in [(R1, C1), (R2, C2)]:
+                        if line1.intersects_rectangle(RC[0]):
+                            updated_rectangle_list.append(RC[0])
+                            updated_curve_list.append(RC[1])
+                curve_list = updated_curve_list
+                rectangle_list = updated_rectangle_list
+                poplist = []
+                for i, R in enumerate(rectangle_list):
+                    if R.get_diagonal_length() < 1e-7:
+                        intersection_list.append(R.get_center())
+                        poplist.append(i)
+                for i in poplist[::-1]:
+                    rectangle_list.pop(i)
+                    curve_list.pop(i)
+            poplist = []
+            for i, I in enumerate(intersection_list[:-2]):
+                for j, I2 in enumerate(intersection_list[i + 1:]):
+                    if scipy.linalg.norm(I - I2, 2) < 1e-7:
+                        poplist.append(j + i)
+            for i in poplist[::-1]:
+                intersection_list.pop(i)
+            return intersection_list
 
     def degree_elevation(self):
         n = len(self.controlpoints)
@@ -210,19 +180,18 @@ class beziercurve(object):
                                    )
         return beziercurve(new_controlpoints)
 
-    def plot(self, label=None, pointlabel=None, points=300, controlpoints=True,
-             title=None):
+    def plot(self, controlpoints=True):
         """
         Method to plot the spline.
         points (int): number of points to use when plotting the spline
         controlpoints (bool): if True, plots the controlpoints as well
         """
         # list of u values for which to plot
-        tlist = scipy.linspace(0, 1, points)
-        pylab.plot(*zip(*[self(t) for t in tlist]), label=label)
+        tlist = scipy.linspace(0, 1, 300)
+        pylab.plot(*zip(*[self(t) for t in tlist]), label='Bézier curve')
         title = 'Bézier curves'
         if controlpoints:  # checking whether to plot control points
-            pylab.plot(*zip(*self.controlpoints), 'o--', label=pointlabel)
+            pylab.plot(*zip(*self.controlpoints), 'o--', label='Controlpoints')
             title += ' and their control points'
         pylab.legend()
         pylab.title(title)
@@ -246,15 +215,15 @@ class beziercurve(object):
 #curve3.plot_rectangle()
 
 ### INTERSECTIONS ###
-controlpoints = scipy.array([[0, 0],
-                             [9, -4],
-                             [7, 5],
-                             [2, -4]])
-
-curve = beziercurve(controlpoints=controlpoints)
-my_rectangle = curve.get_rectangle()
-p = scipy.array([4, 5])
-q = scipy.array([6, -4])
+#controlpoints = scipy.array([[0, 0],
+#                             [9, -4],
+#                             [7, 5],
+#                             [2, -4]])
+#
+#curve = beziercurve(controlpoints=controlpoints)
+#my_rectangle = curve.get_rectangle()
+#p = scipy.array([4, 5])
+#q = scipy.array([6, -4])
 #linefunctions = curve.line_functions_from_points(p, q)
 #print(curve.line_intersects_rectangle(rectangle=my_rectangle,
 #                                      linefunctions=linefunctions))
@@ -278,18 +247,43 @@ q = scipy.array([6, -4])
 #print(curve.line_intersects_rectangle(rectangle=my_rectangle,
 #                                      linefunctions=linefunctions))
 
+p = scipy.array([4, 5])
+q = scipy.array([6, -4])
 L = line(p=p, q=q)
-R1 = rectangle(xlow=1, xhigh=2, ylow=5, yhigh=10)
-print(L.intersects_rectangle(R1))  # True
-R1.plot()
-L.plot(xmin=0, xmax=3)
+controlpoints = scipy.array([[0, 0],
+                             [9, -4],
+                             [7, 5],
+                             [2, -4]])
+curve = beziercurve(controlpoints=controlpoints)
+curve.plot()
+L.plot(xmin=curve.xlow - 1, xmax=curve.xhigh + 1)
 pylab.grid()
+print(curve.intersects_line(L))
 pylab.show()
-
-pylab.cla()
-R2 = rectangle(xlow=1, xhigh=2, ylow=15, yhigh=20)
-print(L.intersects_rectangle(R2))  # False
-R2.plot()
-L.plot(xmin=0, xmax=3)
-pylab.grid()
-pylab.show()
+#my_rectangle = rectangle(xlow=0,
+#                         xhigh=1,
+#                         ylow=0,
+#                         yhigh=1)
+#my_rectangle.plot()
+#pylab.plot(my_rectangle.get_center()[0], my_rectangle.get_center()[1], 'bo')
+#R1 = rectangle(xlow=1, xhigh=2, ylow=5, yhigh=10)
+#print(L.intersects_rectangle(R1))  # True
+#R1.plot()
+#L.plot(xmin=0, xmax=3)
+#pylab.grid()
+#pylab.show()
+#
+#pylab.cla()
+#R2 = rectangle(xlow=1, xhigh=2, ylow=15, yhigh=20)
+#print(L.intersects_rectangle(R2))  # False
+#R2.plot()
+#L.plot(xmin=0, xmax=3)
+#pylab.grid()
+#pylab.show()
+#
+#R3, R4 = R2.split()
+#L.plot(xmin=0, xmax=3)
+##R3.plot()
+#R4.plot()
+#pylab.grid()
+#
