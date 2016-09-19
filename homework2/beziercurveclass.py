@@ -1,10 +1,25 @@
+"""
+This program consists of three different class definitions, a line class,
+a rectangle class and a Bézier curve class. The line and rectangle classes
+are used to implement the trivial reject method to determine the intersection
+between a Bézier curve and a line.
+"""
 import numpy
 import scipy
 import pylab
 
 
 class rectangle(object):
+    """
+    This is a rectangle class.
+    """
     def __init__(self, xlow, xhigh, ylow, yhigh):
+        """
+        An object of the class is initialized with two x-values, one for the
+        lower bound of the rectangle and one for the upper bound, as well as
+        two y-values, one for the lower bound of the rectangle and one for the
+        upper bound.
+        """
         self.corners = scipy.array([[xlow, ylow],
                                     [xlow, yhigh],
                                     [xhigh, yhigh],
@@ -14,30 +29,44 @@ class rectangle(object):
         self.ylow = ylow
         self.yhigh = yhigh
 
-    def __equals__(self, other):
-        if (self.corners == other.corners).all():
-            return True
-        else:
-            return False
-
     def plot(self):
+        """
+        This method plots the rectangle.
+        """
         rectangle_update = scipy.vstack((self.corners, self.corners[0]))
         pylab.plot(rectangle_update[:, 0], rectangle_update[:, 1])
 
     def get_diagonal_length(self):
+        """
+        This method calculates and returns the length of the diagonal of the
+        rectangle.
+        """
         return scipy.linalg.norm(self.corners[0] - self.corners[2], 2)
 
     def get_center(self):
+        """
+        This method calculates and returns the center of the rectangle.
+        """
         xval = 0.5 * (self.xlow + self.xhigh)
         yval = 0.5 * (self.ylow + self.yhigh)
         return scipy.array([xval, yval])
 
 
 class line(object):
+    """
+    This is a line class.
+    """
     def __init__(self, p, q):
+        """
+        An object of the class is initialized with two points through which
+        the line passes.
+        """
         self.Lx, self.Ly = self.get_functions_from_points(p, q)
 
     def get_functions_from_points(self, p, q):
+        """
+        This method returns two functions #TODO
+        """
         Lxcoeff = scipy.polyfit([p[0], q[0]], [p[1], q[1]], 1)
         Lycoeff = scipy.polyfit([p[1], q[1]], [p[0], q[0]], 1)
 
@@ -127,7 +156,6 @@ class beziercurve(object):
             return False
         else:
             rectangle_list = [rectangle1]
-            rectangle1.plot()
             intersection_list = []
             curve_list = [self]
             while rectangle_list:
@@ -143,8 +171,6 @@ class beziercurve(object):
                                    xhigh=C2.xhigh,
                                    ylow=C2.ylow,
                                    yhigh=C2.yhigh)
-                    R1.plot()
-                    R2.plot()
                     for RC in [(R1, C1), (R2, C2)]:
                         if line1.intersects_rectangle(RC[0]):
                             updated_rectangle_list.append(RC[0])
@@ -196,14 +222,19 @@ class beziercurve(object):
         pylab.legend()
         pylab.title(title)
 
-#### SUBDIVISION ###
+#### SUBDIVISION TASSK ###
 #controlpoints = scipy.array([[-1, 0],
 #                             [0, 1],
 #                             [2, 0]])
-
+#
 #curve = beziercurve(controlpoints=controlpoints)
-
+#
+#curve.plot()
+#pylab.grid()
 #curve1, curve2 = curve.subdivision(0.4)
+#
+#print(curve1.controlpoints)
+#print(curve2.controlpoints)
 
 #curve1.plot(label='curve1', pointlabel='points1')
 #curve2.plot(label='curve2', pointlabel='points2')
@@ -211,6 +242,7 @@ class beziercurve(object):
 ### DEGREE ELEVATION ###
 #curve.plot()
 #curve3 = curve.degree_elevation().degree_elevation()
+#print(curve3.controlpoints)
 #curve3.plot()
 #curve3.plot_rectangle()
 
@@ -219,7 +251,16 @@ class beziercurve(object):
 #                             [9, -4],
 #                             [7, 5],
 #                             [2, -4]])
-#
+#p = scipy.array([4, 5])
+#q = scipy.array([6, -4])
+#L = line(p=p, q=q)
+#controlpoints = scipy.array([[0, 0],
+#                             [9, -4],
+#                             [7, 5],
+#                             [2, -4]])
+#curve = beziercurve(controlpoints=controlpoints)
+#print(curve.intersects_line(L))
+
 #curve = beziercurve(controlpoints=controlpoints)
 #my_rectangle = curve.get_rectangle()
 #p = scipy.array([4, 5])
@@ -247,19 +288,10 @@ class beziercurve(object):
 #print(curve.line_intersects_rectangle(rectangle=my_rectangle,
 #                                      linefunctions=linefunctions))
 
-p = scipy.array([4, 5])
-q = scipy.array([6, -4])
-L = line(p=p, q=q)
-controlpoints = scipy.array([[0, 0],
-                             [9, -4],
-                             [7, 5],
-                             [2, -4]])
-curve = beziercurve(controlpoints=controlpoints)
-curve.plot()
-L.plot(xmin=curve.xlow - 1, xmax=curve.xhigh + 1)
-pylab.grid()
-print(curve.intersects_line(L))
-pylab.show()
+#curve.plot()
+#L.plot(xmin=curve.xlow - 1, xmax=curve.xhigh + 1)
+#pylab.grid()
+#pylab.show()
 #my_rectangle = rectangle(xlow=0,
 #                         xhigh=1,
 #                         ylow=0,
