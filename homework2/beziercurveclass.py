@@ -343,8 +343,8 @@ class beziercurve(object):
         if controlpoints:  # checking whether to plot control points
             pylab.plot(*zip(*self.controlpoints), 'o--', label='Controlpoints')
             title += ' and their control points'
-        pylab.legend()
-        pylab.title(title)
+#        pylab.legend()
+#        pylab.title(title)
 
 #### SUBDIVISION TASK ###
 controlpoints = scipy.array([[-1, 0],
@@ -378,6 +378,11 @@ controlpoints = scipy.array([[0, 0],
                              [1, 1],
                              [2, 1]])
 curve = beziercurve(controlpoints=controlpoints)
-curve.plot()
-curve2 = curve.degree_elevation()
-curve2.plot()
+curve.plot(controlpoints=False)
+controlpoints2 = scipy.array([[0, 0],
+                              [0.25, 0.05],
+                              [1, 1],
+                              [2, 1]])
+curve2 = beziercurve(controlpoints=controlpoints2)
+curve2.plot(controlpoints=False)
+pylab.grid()
