@@ -346,6 +346,7 @@ class beziercurve(object):
         pylab.legend()
         pylab.title(title)
 
+"""
 #### SUBDIVISION TASK ###
 controlpoints = scipy.array([[-1, 0],
                              [0, 1],
@@ -371,13 +372,14 @@ controlpoints = scipy.array([[0, 0],
                              [7, 5],
                              [2, -4]])
 curve = beziercurve(controlpoints=controlpoints)
-print(curve.intersects_line(L))
+print(curve.intersects_line(L))"""
 
 ### Task 6 ###
 controlpoints = scipy.array([[0, 0],
                              [1, 1],
                              [2, 1]])
 curve = beziercurve(controlpoints=controlpoints)
+curve2 = curve.degree_elevation()
 curve.plot(controlpoints=False)
 controlpoints2 = scipy.array([[0, 0],
                               [0.25, 0.05],
@@ -385,4 +387,6 @@ controlpoints2 = scipy.array([[0, 0],
                               [2, 1]])
 curve2 = beziercurve(controlpoints=controlpoints2)
 curve2.plot(controlpoints=False)
+pylab.legend(loc=4)
 pylab.grid()
+pylab.show()
