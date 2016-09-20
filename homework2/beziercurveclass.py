@@ -216,7 +216,7 @@ class beziercurve(object):
         controlpoints1 = scipy.array([deCasteljauArray[i, 2 * i:2 * i+2]
                                       for i in range(len(self.controlpoints))])
         controlpoints2 = scipy.array([deCasteljauArray[-1, 2 * i:2 * i+2]
-                                      for i in range(len(self.controlpoints))]):
+                                      for i in range(len(self.controlpoints))])
         controlpoints2 = controlpoints2[::-1]
         curve1 = beziercurve(controlpoints1)
         curve2 = beziercurve(controlpoints2)
@@ -372,3 +372,12 @@ controlpoints = scipy.array([[0, 0],
                              [2, -4]])
 curve = beziercurve(controlpoints=controlpoints)
 print(curve.intersects_line(L))
+
+### Task 6 ###
+controlpoints = scipy.array([[0, 0],
+                             [1, 1],
+                             [2, 1]])
+curve = beziercurve(controlpoints=controlpoints)
+curve.plot()
+curve2 = curve.degree_elevation()
+curve2.plot()
