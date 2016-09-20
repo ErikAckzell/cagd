@@ -343,8 +343,8 @@ class beziercurve(object):
         if controlpoints:  # checking whether to plot control points
             pylab.plot(*zip(*self.controlpoints), 'o--', label='Controlpoints')
             title += ' and their control points'
-#        pylab.legend()
-#        pylab.title(title)
+        pylab.legend()
+        pylab.title(title)
 
 #### SUBDIVISION TASK ###
 controlpoints = scipy.array([[-1, 0],
