@@ -1,0 +1,59 @@
+\documentclass[]{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{mdframed}
+\usepackage{paralist}
+\usepackage{listings}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+
+\lstset{
+  language=Python,
+  breaklines=true,
+  showstringspaces=false,
+  frame=single,
+  aboveskip=3mm,
+  belowskip=3mm,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{dkgreen},
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\title{CAGD - Homework 3}
+\author{Josefine St{\aa}l \& Erik Ackzell}
+
+\begin{document}
+
+\maketitle
+\section*{Task 3}
+In this task we implement a method to check whether a real number is in an interval with full support, given a knot sequence, a degree of the spline basis and the number itself. The code can be seen in Appendix 1. \\
+We tried our code for three different knot sequences, $k_1=(0, 0, 1, 1)$, $k_2=(0, 0, 0, 1, 1, 1)$ and $k_3=(0, 0, 0, 0.3, 0.5, 0.6, 1, 1, 1)$, all with quadratic splines. For each of the scenarios, we tested our code with the real numbers $\{0.12, 0.24, 0.4, 0.53, 0.78, 0.8\}$.
+\begin{itemize}
+	\item For $k_1$, we found that all points were in intervals \textbf{without} full support.
+	\item For $k_2$, we found that all points were in intervals \textbf{with} full support.
+	\item For $k_3$, we found that all points were in intervals \textbf{with} full support.
+\end{itemize}
+The results were as expected, as an interval has full support when using quadratic splines, if there are 3 or more knots to the left of the interval as well as to the right of the interval.
+
+%\begin{figure}[h!]
+%	\includegraphics[scale=0.6]{non_symmetric_degree_elevation}
+%\end{figure}
+
+
+\newpage
+\section*{Appendix I}
+%\lstinputlisting[lastline=347]{beziercurveclass.py}
+
+\end{document}
