@@ -1,6 +1,7 @@
 
 import scipy
 import pylab
+import numpy as np
 
 
 class bspline:
@@ -19,9 +20,9 @@ class bspline:
             self.degree = degree
 
     def __call__(self, u):
-        S = sum([controlpoints[i] * self.get_basisfunc(k=self.degree,
+        S = sum([self.controlpoints[i] * self.get_basisfunc(k=self.degree,
                                                        j=i)(u)
-                 for i in range(len(controlpoints))])
+                 for i in range(len(self.controlpoints))])
         return S
 
     def has_full_support(self, u):
@@ -75,6 +76,24 @@ class bspline:
         pylab.title('B-spline curve and its control polygon')
         pylab.show()
 
+
+### Task 2 ###
+knots = scipy.array([0,0,0,0.3,0.5,0.5,0.6,1,1,1])
+degree = 2
+ulist = np.linspace(-0.5,1.5,1000)
+bspline = bspline(knots, degree=degree)
+
+numBasisFunc = len(knots) - 1 - degree
+for i in range(numBasisFunc):
+    funcval = [bspline.get_basisfunc(k=degree,j=i)(u) for u in ulist]
+    pylab.plot(ulist,funcval,label='$N_{}^{}$'.format(i,degree))
+pylab.title('B-Spline Basis Functions of Degree $2$ Corresponding to \n the Knot Sequence'
+            ' $\{0,0,0,0.3,0.5,0.5,0.6,1,1,1\}$')
+pylab.xlabel('$u$')
+pylab.ylabel('$N_j^n$')
+pylab.legend(loc=1)
+pylab.show()
+
 ### Task 2 inspiration###
 #knots = scipy.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 #s = bspline(degree=2, knots=knots)
@@ -82,7 +101,7 @@ class bspline:
 #plotlist = [s.get_basisfunc(k=3, j=4)(u) for u in ulist]
 #pylab.plot(ulist, plotlist)
 
-
+"""
 ### Task 3 ###
 knots1 = scipy.array([0, 0, 1, 1])
 knots2 = scipy.array([0, 0, 0, 1, 1, 1])
@@ -112,4 +131,4 @@ controlpoints = scipy.array([[0, 0],
 
 knots = scipy.array([0, 0, 0, 0.3, 0.5, 0.5, 0.6, 1, 1, 1])
 s = bspline(knots=knots, controlpoints=controlpoints)
-s.plot()
+s.plot()"""
