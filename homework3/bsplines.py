@@ -3,13 +3,18 @@ import scipy
 import pylab
 
 
-class bspline(object):
+class bspline:
 
-    def __init__(self, degree, knots, controlpoints=None):
+    def __init__(self, knots, degree=None, controlpoints=None):
         self.knots = knots
-        self.degree = degree
-        self.controlpoints = controlpoints
-
+        
+        if controlpoints:
+            self.controlpoints = controlpoints
+            self.degree = len(self.knots) - 1 - len(self.controlpoints)
+            if degree:
+                assert degree == self.degree, \
+                       'Given degree is wrong. Check the knots and control points or do not define a degree yourself.'
+                
     def __call__(self, u, degree, controlpoints):
         S = sum([controlpoints[i] * self.get_basisfunc(k=degree,
                                                        j=i)(u)
@@ -46,12 +51,13 @@ class bspline(object):
                            else (u - self.knots[j])/(self.knots[j+k]-self.knots[j])
                     a1 = 0 if self.knots[j+k+1] == self.knots[j+1] \
                            else (self.knots[j+k+1] - u)/(self.knots[j+k+1] - self.knots[j+1])
-                    basisfunc = a0 * basisfunction(u, k=k-1) \
+                    print(a0, a1)
+                    basisfunc = a0 * basisfunction(u, k=k-1, j=j) \
                                 + a1 * basisfunction(u, k=k-1, j=j+1)
                 except IndexError:
                     numBasisfunc = len(self.knots) - 1 - k
-                    return 'Invalid index. There are no more than {} basis functions for the given problem, choose an ' \
-                                'index lower than the number of basis functions.'.format(numBasisfunc)
+                    raise IndexError('Invalid index. There are no more than {} basis functions for the given problem, choose an ' \
+                                'index lower than the number of basis functions.'.format(numBasisfunc))
 
                 return basisfunc
         return basisfunction
@@ -100,5 +106,5 @@ controlpoints = scipy.array([[0, 0],
 knots = scipy.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 s = bspline(degree=2, knots=knots)
 ulist = scipy.linspace(s.knots[0], s.knots[-1], 200)
-plotlist = [s.get_basisfunc(k=2, j=3)(u) for u in ulist]
+plotlist = [s.get_basisfunc(k=3, j=4)(u) for u in ulist]
 pylab.plot(ulist, plotlist)
