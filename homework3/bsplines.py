@@ -19,12 +19,18 @@ class bspline:
             self.degree = degree
 
     def __call__(self, u):
+        """
+        Evaluates the spline at a point u, using the spline definition.
+        """
         S = sum([controlpoints[i] * self.get_basisfunc(k=self.degree,
                                                        j=i)(u)
                  for i in range(len(controlpoints))])
         return S
 
     def has_full_support(self, u):
+        """
+        This method checks if the point u is in an interval with full support.
+        """
         if min(scipy.count_nonzero(self.knots < u),
                scipy.count_nonzero(self.knots > u)) > self.degree:
             return True
@@ -67,10 +73,15 @@ class bspline:
         return basisfunction
 
     def plot(self):
+        """
+        This method plots the spline.
+        """
         ulist = scipy.linspace(self.knots[0], self.knots[-1], 1000)
         ulist = [u for u in ulist if self.has_full_support(u=u)]
         pylab.plot(*zip(*[self(u=u) for u in ulist]))
-        pylab.plot(*zip(*self.controlpoints), 'o--')
+        pylab.plot(*zip(*self.controlpoints), 'o--', label='control points')
+        pylab.plot(*zip(*[self(u=u) for u in self.knots]), 'rx', label='knots')
+        pylab.legend()
         pylab.grid()
         pylab.title('B-spline curve and its control polygon')
         pylab.show()
