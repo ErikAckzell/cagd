@@ -65,9 +65,7 @@ Every B\'{e}zier segments has the same degree $p$ as the original curve, resulti
 \end{equation*}
 \subsection*{Comparison with control points of B-spline}
 In the plot below, the relation of $n+1$ and the total number of control points of the B\'{e}zier segments can be seen. From \eqref{segmentrelation} we have that $n+1>p$, yielding the somewhat strange appearance of the plot. We see that the number of total number of control points of the B\'{e}zier segments is larger than the number of control points of the corresponding B-splines, except for the case $p=1$, where they are equal.
-\begin{figure}[h!]
-\includegraphics[scale=0.6]{segmentrelation}
-\end{figure}
+
 \section*{Task 6}
 In this task we want to give a rational parametric representation of the segment of the unit circle in $\mathbb{R}^2$ for $x, y \leq 0$.\\
 A natural parametrization of the circle is simply\begin{equation*}
@@ -82,19 +80,30 @@ We recall the Taylor expansions of sine and cosine\begin{equation}
 \cos(t) &= \sum_{k=0}^{\infty}(-1)^k\frac{t^{2k}}{(2k)!}
 \end{aligned}
 \end{equation}
-$\forall t\in\mathbb{R}$. It is thus not possible to express the functions, i.e. the coordinates on the circle as polynomials of finite dimensions.\\
-We know that the image of the tangent function is $\pm\infty$ and we have the trigonometric identities \begin{equation*}
-\begin{aligned}
-\sin(2a) & = \frac{2\tan(a)}{1 + \tan^2(a)}\\
-\cos(2a) &= \frac{1 - \tan^2(a)}{1 + \tan^2(a)}.
-\end{aligned}
+$\forall t\in\mathbb{R}$. It is thus not possible to express the points on the circle as polynomials of finite degrees.\\
+Consider the lines passing through the point (1, 0) and the segment of the unit circle with $x, y\leq 0$. All such lines are on the form \begin{equation}\label{lines}
+y=t(x-1)\quad t\in[0, 1]\quad x\in[-1, 0].
+\end{equation}
+All points on the circle segment fulfills \begin{equation}\label{circle}
+y^2 + x^2 = 1.
+\end{equation} 
+Now substitute $y$ in \eqref{circle} with $y$ in \eqref{lines}. This yields\begin{equation}\label{xequation}
+x^2 + t^2(x - 1)^2 = 1.
+\end{equation}
+The solutions to \eqref{xequation} are given by $x=1$ and $x=\frac{t^2 - 1}{t^2 + 1}$ and since we need $x\in [-1, 0]$ only the second is suitable. Inserting this expression for $x$ into \eqref{circle} yields\begin{equation}\label{yequation}
+y^2 + \left(\frac{t^2 - 1}{t^2 + 1}\right)^2 = 1.
+\end{equation}
+The solutions to \eqref{yequation} are given by $y=\frac{2t}{t^2 + 1}$ and $y=-\frac{2t}{t^2 + 1}$ and we are only interested in the second solution as $y\in[-1, 0]$.\\
+Thus, the circle segment can be parametrized by \begin{equation*}
+\varphi(t)=\frac{1}{t^2 + 1}\left(\begin{array}{c}
+t^2 - 1\\
+-2t
+\end{array}\right).
 \end{equation*}
-Now substitute $\tan(a/2)$ with $t$. We then get \begin{equation*}
-\begin{aligned}
-\sin(t) & = \frac{2\tan(a)}{1 + \tan^2(a)}\\
-\cos(2a) &= \frac{1 - \tan^2(a)}{1 + \tan^2(a)}.
-\end{aligned}
-\end{equation*} 
+A plot of the circle segment using the above parametrization can be seen below.
+\begin{figure}[h!]
+	\includegraphics[scale=0.6]{circlesegment}
+\end{figure}
 \section*{Appendix I}
 %\lstinputlisting[lastline=87]{bsplines.py}
 
