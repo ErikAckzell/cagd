@@ -1,0 +1,75 @@
+\documentclass[]{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{mdframed}
+\usepackage{paralist}
+\usepackage{listings}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+
+\lstset{
+  language=Python,
+  breaklines=true,
+  showstringspaces=false,
+  frame=single,
+  aboveskip=3mm,
+  belowskip=3mm,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{dkgreen},
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\title{CAGD - Homework 4}
+\author{Josefine St{\aa}l \& Erik Ackzell}
+
+\begin{document}
+
+\maketitle
+
+\section*{Task 3}
+In this task we want to derive a relation between the number of control points $n+1$ of a clamped B-spline curve of degree $p$ and with simple knots, and the total number of control points of the curve's B\'{e}zier segments. We first determine the number of B\'{e}zier segments expressed in $n$ and then find the number of control points.
+\subsection*{Number of B\'{e}zier segments}
+In the case of only simple knots, including the endpoints, we know that the number of subintervals are given by \begin{equation}\label{subintervals}
+\#\mathrm{subintervals} = \#\mathrm{knots} - 1.
+\end{equation}
+From \eqref{subintervals}, it is evident that in the present case, the number of B\'{e}zier segments is given by \begin{equation}\label{segments}
+\#\mathrm{segments} = \#\mathrm{knots} - 2p - 1.
+\end{equation}
+Furthermore, we know that \begin{equation*}
+\#\mathrm{knots} - 1 = \#\mathrm{controlpoints} + \mathrm{degree},
+\end{equation*} 
+or equivalently\begin{equation}\label{generalrelation}
+\#\mathrm{knots} - 1 = n + 1 + p.
+\end{equation}
+Using \eqref{segments} and \eqref{generalrelation}, we have that \begin{equation}\label{segmentrelation}
+\#\mathrm{segments} = n + 1 - p.
+\end{equation}
+\subsection*{Number of control points}
+Every B\'{e}zier segments has the same degree $p$ as the original curve, resulting in every segment needing $p+1$ control points. As the inner control points are each used by two B\'{e}zier segments, one of the segment has $p+1$ unique control points, while the others have $p$ unique control points each. Using \eqref{segmentrelation}, we have that the total number of control points are given by\begin{equation*}
+\begin{aligned}
+\#\mathrm{total} &= p + 1 + p(n + 1 - 1)\\
+&= p(n + 1 - p) + 1.
+\end{aligned}
+\end{equation*}
+\subsection*{Comparison with control points of B-spline}
+In the plot below, the relation of $n+1$ and the total number of control points of the B\'{e}zier segments can be seen. From \eqref{segmentrelation} we have that $n+1>p$, yielding the somewhat strange appearance of the plot. We see that the number of total number of control points of the B\'{e}zier segments is larger than the number of control points of the corresponding B-splines, except for the case $p=1$, where they are equal.
+\begin{figure}[h!]
+\includegraphics[scale=0.6]{segmentrelation}
+\end{figure}
+
+\section*{Appendix I}
+%\lstinputlisting[lastline=87]{bsplines.py}
+
+\end{document}
