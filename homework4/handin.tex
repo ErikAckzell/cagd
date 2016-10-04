@@ -68,7 +68,33 @@ In the plot below, the relation of $n+1$ and the total number of control points 
 \begin{figure}[h!]
 \includegraphics[scale=0.6]{segmentrelation}
 \end{figure}
-
+\section*{Task 6}
+In this task we want to give a rational parametric representation of the segment of the unit circle in $\mathbb{R}^2$ for $x, y \leq 0$.\\
+A natural parametrization of the circle is simply\begin{equation*}
+\varphi(t) = \left(\begin{array}{c}
+\sin(t)\\
+\cos(t)
+\end{array}\right).
+\end{equation*}
+We recall the Taylor expansions of sine and cosine\begin{equation}
+\begin{aligned}
+\sin(t) &= \sum_{k=0}^{\infty}(-1)^k\frac{t^{2k+1}}{(2k+1)!}\\
+\cos(t) &= \sum_{k=0}^{\infty}(-1)^k\frac{t^{2k}}{(2k)!}
+\end{aligned}
+\end{equation}
+$\forall t\in\mathbb{R}$. It is thus not possible to express the functions, i.e. the coordinates on the circle as polynomials of finite dimensions.\\
+We know that the image of the tangent function is $\pm\infty$ and we have the trigonometric identities \begin{equation*}
+\begin{aligned}
+\sin(2a) & = \frac{2\tan(a)}{1 + \tan^2(a)}\\
+\cos(2a) &= \frac{1 - \tan^2(a)}{1 + \tan^2(a)}.
+\end{aligned}
+\end{equation*}
+Now substitute $\tan(a/2)$ with $t$. We then get \begin{equation*}
+\begin{aligned}
+\sin(t) & = \frac{2\tan(a)}{1 + \tan^2(a)}\\
+\cos(2a) &= \frac{1 - \tan^2(a)}{1 + \tan^2(a)}.
+\end{aligned}
+\end{equation*} 
 \section*{Appendix I}
 %\lstinputlisting[lastline=87]{bsplines.py}
 
