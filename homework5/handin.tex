@@ -155,48 +155,36 @@ which is what we wanted to determine.
 %\end{figure}
 
 \section*{Do-over Homework 2 Task 5}
-In this task we want to determine whether the Lagrange and monomial forms are invariant under affine 	domain transformations. We show that the Lagrange form is \textbf{not} invariant under all domain transformations and that the monomial form is invariant under domain transformations.\\
+\underline{\textbf{Claim 1:}} The Lagrange form is invariant under all affine maps.\\
 \\
-\textbf{Claim:} The Lagrange form is not invariant under all domain transformations.\\
-\textbf{Proof:} Assume that the Lagrange form is invariant under all domain transformation, and define the domain transformation \begin{equation*}
-\varphi: [-3, 3] \rightarrow [0, 1]
+\underline{\textbf{Proof:}} Let $\varphi:\mathbb{E}^n\rightarrow\mathbb{E}^n$ be any affine map. Then $\varphi$ can be expressed as \begin{equation*}
+\varphi(u) = Au + v,
 \end{equation*}
-by
-\begin{equation*}
-\varphi(x) = \frac{x + 3}{6}.
+with $A\in\mathbb{R}^{n\times n}$ and $v\in\mathbb{R}^n$. Let $p$ be a polynomial of degree $n$. Then $p$ can be expressed as a linear combination of Lagrange basis polynomials $L_i^n$ of degree $n$, i.e. \begin{equation*}
+p(x) = \sum_{i = 0}^{n}L_i^n(x)c_i,
 \end{equation*}
-We know that the Lagrange basis polynomial of degree $n$ is on the form\begin{equation*}
-L_i^n(x) = \prod_{j=0, j\neq i}^{n}\frac{x-x_i}{x_i - x_j}
+with $c_i\in\mathbb{R}^n$ for $i = 0, 1, \dots, n$. Recall that the Lagrange basis fulfills the partition of unity, i.e. \begin{equation*}
+\sum_{i = 0}^{n}L_i^n(x)=1.
 \end{equation*}
-And that any polynomial \begin{equation*}
-p:[-3, 3]\rightarrow \mathbb{R}
-\end{equation*}
-of degree $n$ can be expressed as \begin{equation*}
-p(x)=\sum_{i = 0}^{n} c_iL_i^n(x).
-\end{equation*}
-Set $n=1$, $c_0 = 2$, $c_1 = 3$, $x_0=-3$ and $x_1 = 3$ and define \begin{equation*}
-p(x)=\sum_{i = 0}^{1} c_iL_i^1(x).
-\end{equation*}
-We have that, for $x=1$ \begin{equation*}
+We have that \begin{equation*}
 \begin{aligned}
-\varphi(p(1)) &= \varphi\left(\sum_{i = 0}^{1}c_iL_i^1(1)\right)\\
-&=\varphi\left(c_0L_0^1(1) + c_1L_1^1(1)\right)\\
-&=\varphi\left(- 2 \cdot\frac{4}{6} - 3\cdot\frac{2}{6}\right)\\
-&=\varphi\left(- \frac{8}{6} - \frac{6}{6}\right)\\
-&=\varphi\left(-\frac{7}{3}\right)\\
-&=-\frac{7}{18} + \frac{1}{2}\\
-&=\frac{2}{9}.
+\varphi(p(x)) &= \varphi\left(\sum_{i = 0}^{n}L_i^n(x)c_i\right)\\
+&= A\sum_{i = 0}^{n}L_i^n(x)c_i + v\\
+&= \sum_{i = 0}^{n}L_i^n(x)Ac_i + v\\
+&= \sum_{i = 0}^{n}L_i^n(x)Ac_i + 1\cdot v\\
+&= \sum_{i = 0}^{n}L_i^n(x)Ac_i + \sum_{i = 0}^{n}L_i^n(x)v\\
+&= \sum_{i = 0}^{n}L_i^n(x)(Ac_i + v)\\
+&= \sum_{i = 0}^{n}L_i^n(x)\varphi(c_i)
 \end{aligned}
 \end{equation*}
-Furthermore, we have that \begin{equation*}
-\begin{aligned}
-\sum_{i = 0}^{1}\varphi(c_i)L_i^1(1) &= -\varphi(c_0)\cdot \frac{2}{3} - \varphi(c_1)\cdot\frac{1}{3}\\
-&=-\frac{5}{6}\cdot\frac{2}{3} - 1 \cdot \frac{1}{3}\\
-&=-\frac{10}{18} - \frac{6}{18}\\
-&=-\frac{8}{9}.
-\end{aligned}
-\end{equation*}
-
+which is what we wanted to show. $\square$\\
+\\
+\underline{\textbf{Corollary:}} The Lagrange form in invariant under all affine domain transformations.\\
+\underline{\textbf{Proof:}} As all affine domain transformations are affine maps, the result follows directly from Claim 1. $\square$\\
+\\
+\underline{\textbf{Claim 2:}} The monomial form is \textbf{not} invariant under all affine domain transformation maps.\\
+\\
+\underline{\textbf{Proof:}} Let $\varphi:\mathbb{E}^n\rightarrow\mathbb{E}^n$ be any affine map. Then 
 \newpage
 \section*{Appendix I}
 %\lstinputlisting[lastline=87]{bsplines.py}
