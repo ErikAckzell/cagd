@@ -37,12 +37,14 @@ class Bspline(object):
         print('index:', index,'r:', r)
         d = scipy.zeros((len(current_controlpoints), len(current_controlpoints), self.dim))
         d[0] = current_controlpoints
-        print(scipy.shape(d), d)
+#        print(scipy.shape(d), d)
         for s in range(1, self.degree - r): # columns SHOULD IT BE +1 AT THE END?
             for j in range(index - self.degree + s, index - r): # rows SHOULD IT BE +1 AT THE END?
                 a = (u - self.grid[j])/(self.grid[j + self.degree - s + 1] - self.grid[j])
                 print('j:', j, 's:', s)
                 d[j,s] = (1-a)*d[j-1,s-1] + a*d[j,s-1]
+
+        print('shape d_end: ', scipy.shape(d), 'd_end: ', d)
         return d[index - r - 1, self.degree - r ]
 
     def get_mult(self, index, u):
