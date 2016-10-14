@@ -37,6 +37,14 @@
 \begin{document}
 
 \maketitle
+\section*{Task 1}
+The B-Spline algorithm can be found in Appendix I. 
+
+\section*{Task 2}
+The plot shows the B-Spline curved constructed by the grid $\{1,1,1,1,6/5,7/5,8/5,9/5,2,2,2,2\}$ and the control points $(0.7,-0.4)$, $(1,-0.4)$, $(2.5,-1.2)$, $(3.2,-0.5)$, $(-0.2,-0.5)$, $(0.5,-1.2)$, $(2,-0.4)$ and $(2.3,-0.4)$. 
+\begin{figure}[h!]
+	\includegraphics[scale=0.6]{task2}
+\end{figure}
 
 \section*{Task 3}
 In this task we want to derive a relation between the number of control points $n+1$ of a clamped B-spline curve of degree $p$ and with simple knots, and the total number of control points of the curve's B\'{e}zier segments. We first determine the number of B\'{e}zier segments expressed in $n$ and then find the number of control points.
@@ -65,6 +73,19 @@ Every B\'{e}zier segments has the same degree $p$ as the original curve, resulti
 \end{equation*}
 \subsection*{Comparison with control points of B-spline}
 In the plot below, the relation of $n+1$ and the total number of control points of the B\'{e}zier segments can be seen. From \eqref{segmentrelation} we have that $n+1>p$, yielding the somewhat strange appearance of the plot. We see that the number of total number of control points of the B\'{e}zier segments is larger than the number of control points of the corresponding B-splines, except for the case $p=1$, where they are equal.
+
+\section*{Task 4}
+
+
+\section*{Task 5}
+The curve constructed by the knots $$\{0,1/11,2/11,3/11,4/11,5/11,6/11,7/11,8/11,9/11,10/11,1\}$$ with control points $(0,0)$, $(3,2)$, $(9,-2)$, $(7,-5)$, $(1,-3)$, $(1,-1)$, $(3,1)$, $(9,-1)$ is shown in the first figure. The following figures show how the curve changes if we replace the last knot by the first one followed by the second last one with the second one and so on. 
+
+What we can se from the pictures is that..
+
+\begin{figure}[h!]
+	%\includegraphics[scale=0.6]{task5}
+\end{figure}
+
 
 \section*{Task 6}
 In this task we want to give a rational parametric representation of the segment of the unit circle in $\mathbb{R}^2$ for $x, y \leq 0$.\\
@@ -104,7 +125,9 @@ A plot of the circle segment using the above parametrization can be seen below.
 \begin{figure}[h!]
 	\includegraphics[scale=0.6]{circlesegment}
 \end{figure}
+
+\newpage
 \section*{Appendix I}
-%\lstinputlisting[lastline=87]{bsplines.py}
+\lstinputlisting{BsplineClass.py}
 
 \end{document}
