@@ -1,23 +1,9 @@
 import scipy
 from matplotlib import pyplot as plt
-import numpy as np
 
 
-class NURBS(object):
+class NURBS:
     def __init__(self, grid, controlpoints, degree, weights):
-        """
-        grid (iterable): grid points should have multiplicity 3 in order to
-        have the spline starting and ending in the first and last control
-        point, respectively.
-        controlpoints (array): should be on the form
-                controlpoints = array([
-                                      [d_00, d01],
-                                      [d_10, d11],
-                                      ...
-                                      [d_L0, d_L1],
-                                      ]),
-        i.e. an (L+1)x2 array.
-        """
         if len(controlpoints) != len(weights):
             raise ValueError('Not same number of controlpoints and weights')
         try:
@@ -25,8 +11,6 @@ class NURBS(object):
             grid = grid.reshape((len(grid), 1))
         except ValueError:
             raise ValueError('Grid should be a one-dimensional list or array')
-        if controlpoints.shape[1] != 2:
-            raise ValueError('Controlpoints should be an (L+1)x2 array.')
         self.grid = grid.reshape((len(grid), 1))
         self.controlpoints = controlpoints
         self.degree = degree
@@ -35,7 +19,7 @@ class NURBS(object):
 
     def __call__(self, u):
         index = self.get_index(u)
-        r = -1
+        r = self.get_mult(index, u)
         controlpoints, weights = self.get_controlpoints_and_weights(index,
                                                                     r,
                                                                     u)
@@ -54,6 +38,14 @@ class NURBS(object):
                 d[s, j] = (1 - a) * d[s-1, j-1] + a * d[s-1, j]
         return self.convert_to_cartesian(
             d[-1, -1].reshape((1, len(d[-1, -1])))).flatten()
+
+    def get_mult(self, index, u):
+        if u == self.grid[index]:
+            return len([i for i in self.grid if i == self.grid[index]])
+        elif u == self.grid[-1]:
+            return len([i for i in self.grid if i == self.grid[-1]])
+        else:
+            return 0
 
     def convert_to_homogeneous(self, controlpoints, weights):
         homogeneous_controlpoints = scipy.zeros((controlpoints.shape[0],
@@ -76,33 +68,36 @@ class NURBS(object):
         return cartesian_controlpoints
 
     def get_controlpoints_and_weights(self, index, r, u):
-        current_controlpoints = self.controlpoints[index - self.degree:index - r]
-        current_weights = self.weights[index - self.degree:index - r]
+        if r > self.degree:
+            if u == self.grid[0]:
+                current_controlpoints = self.controlpoints[:self.degree + 1]
+                current_weights = self.weights[:self.degree + 1]
+            else:
+                current_controlpoints = self.controlpoints[-(self.degree + 1):]
+                current_weights = self.weights[- (self.degree + 1) :]
+        else:
+            current_controlpoints = \
+                self.controlpoints[index - self.degree:index - r + 1]
+            current_weights = self.weights[index - self.degree:index - r + 1]
         return current_controlpoints, current_weights
 
-
     def get_index(self, u):
-        if u == self.grid[-1]:  # check if u equals last knot
+        if u == self.grid[-1]:
             index = (self.grid < u).argmin() - 1
         else:
             index = (self.grid > u).argmax() - 1
         return index
 
-    def plot(self, title, filename=None, points=500, controlpoints=True):
+    def plot(self, title, points=500, controlpoints=True):
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        #  list of u values for which to plot
         ulist = scipy.linspace(self.grid[0], self.grid[-1], points)
-        ax.plot(*zip(*[self(u) for u in ulist]), label='B-Spline Curve')
-        if controlpoints:  # checking whether to plot control points
+        ax.plot(*zip(*[self(u) for u in ulist]), label='NURBS curve')
+        if controlpoints:
             ax.plot(*zip(*self.controlpoints), 'o--', label='Control Points')
 
-        lgd = ax.legend(loc='upper left', bbox_to_anchor=(1, 1))
+        lgd = ax.legend(loc='best')
         plt.title(title)
-        if filename:
-            fig.savefig(filename,
-                        bbox_extra_artists=(lgd,),
-                        bbox_inches='tight')
         return fig
 
 if __name__ == '__main__':
@@ -126,15 +121,5 @@ if __name__ == '__main__':
                        degree=2,
                        grid=grid,
                        weights=weights)
-    fig = nurbscurve.plot('Circle constructed using NURBS', filename='circle')
+    fig = nurbscurve.plot('Circle constructed using NURBS')
     fig.show()
-
-#    def circle(t):
-#        return scipy.array([scipy.sin(t), scipy.cos(t)])
-#
-#    tlist = scipy.linspace(0, 2 * scipy.pi, 200)
-#    plotlist1 = [circle(t) for t in tlist]
-#    plt.close('all')
-#    plt.plot(*zip(*plotlist1), label='circle segment')
-#    plt.xlim([-1, 1])
-#    plt.ylim([-1, 1])
