@@ -151,7 +151,7 @@ which is what we wanted to determine.
 %\end{figure}
 
 \section*{Task 3}
-In this task we construct a circle using second degree NURBS and the De Boor algorithm. The code can be seen in Appendix I.\\
+In this task we construct a circle using second degree NURBS and the de Boor algorithm. The code can be seen in Appendix I.\\
 The following nine control points are used \begin{equation*}
 \{(-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0)\},
 \end{equation*}
@@ -167,7 +167,7 @@ If all weights are set to one, we end up with a B-spline curve with the followin
 In order to obtain an actual circle, we change the weights corresponding to the control points located in the vertices of the square. By trial and error, we find the correct weights $\omega$ to be \begin{equation*}
 \omega= \{1, 0.707, 1, 0.707, 1, 0.707, 1, 0.707, 1\},
 \end{equation*}
-so the weights corresponding to to the vertices of are approximately $\frac{\sqrt{2}}{2}$. The circle can be seen below.
+so the weights corresponding to the vertices of the square are approximately $\frac{\sqrt{2}}{2}$. The circle can be seen below.
 \begin{figure}[h!]
 	\includegraphics[scale=0.6]{nurbscircle}
 \end{figure}
