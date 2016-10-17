@@ -2,12 +2,8 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
-\usepackage{algorithmic}
-\usepackage{algorithm}
 \usepackage{tikz}
 \usepackage{graphicx}
-\usepackage{mdframed}
-\usepackage{paralist}
 \usepackage{listings}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
@@ -182,9 +178,37 @@ which is what we wanted to show. $\square$\\
 \underline{\textbf{Corollary:}} The Lagrange form in invariant under all affine domain transformations.\\
 \underline{\textbf{Proof:}} As all affine domain transformations are affine maps, the result follows directly from Claim 1. $\square$\\
 \\
-\underline{\textbf{Claim 2:}} The monomial form is \textbf{not} invariant under all affine domain transformation maps.\\
+\underline{\textbf{Claim 2:}} The monomial form is \textbf{not} invariant under all affine domain transformations.\\
 \\
-\underline{\textbf{Proof:}} Let $\varphi:\mathbb{E}^n\rightarrow\mathbb{E}^n$ be any affine map. Then 
+\underline{\textbf{Proof:}} Let $\varphi:[c, d]\rightarrow [0, 1]$ be the affine domain transformation defined by \begin{equation*}
+\varphi(u) = \frac{u - c}{d - c}
+\end{equation*} 
+and set \begin{equation*}
+A=\frac{1}{d-c}, \quad v = \frac{c}{d - c},
+\end{equation*}
+so that \begin{equation*}
+\varphi(u) = Au + v.
+\end{equation*}
+Now let $p$ be a polynomial of degree 1 on such that $\mathrm{Im}(p|_{[a, d]}) = [c, d]$. Then we can express $p$ as \begin{equation*}
+\begin{aligned}
+p(x) &= \sum_{i=0}^{1}x^ic_i\\
+&=c_0 + xc_1, \quad x\in [a, b].
+\end{aligned}
+\end{equation*}
+Then, for $x\in [a, b]$, \begin{equation*}
+\begin{aligned}
+\varphi(p(x)) &= \varphi(c_0 + xc_1)\\
+&=A(c_0 + xc_1) + v
+\end{aligned}
+\end{equation*}
+Furthermore, for $x\in [a, b]$, \begin{equation*}
+\begin{aligned}
+\sum_{i=0}^{1} x^i\varphi(c_i) &= \varphi(c_0) + x\varphi(c_1)\\
+&=Ac_0 + v + x(Ac_1 + v)
+\end{aligned}
+\end{equation*}
+Thus, for $x\in[a, b]$, $\varphi(p(x)) = \sum_{i = 0}^{1}x^i\varphi(c_i)$ iff $xv = 0$ which is not true in general. Hence, the monomial for is not invariant under all affine domain transformations. $\square$
+
 \newpage
 \section*{Appendix I}
 %\lstinputlisting[lastline=87]{bsplines.py}
