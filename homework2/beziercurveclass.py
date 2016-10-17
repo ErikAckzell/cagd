@@ -7,6 +7,7 @@ between a Bézier curve and a line.
 import numpy
 import scipy
 import pylab
+from matplotlib import pyplot as plt
 
 
 class rectangle(object):
@@ -345,6 +346,7 @@ class beziercurve(object):
             title += ' and their control points'
         pylab.legend()
         pylab.title(title)
+        pylab.show()
 
 """
 #### SUBDIVISION TASK ###
@@ -372,7 +374,7 @@ controlpoints = scipy.array([[0, 0],
                              [7, 5],
                              [2, -4]])
 curve = beziercurve(controlpoints=controlpoints)
-print(curve.intersects_line(L))"""
+print(curve.intersects_line(L))
 
 ### Task 6 ###
 controlpoints = scipy.array([[0, 0],
@@ -389,4 +391,4 @@ curve2 = beziercurve(controlpoints=controlpoints2)
 curve2.plot(controlpoints=False)
 pylab.legend(loc=4)
 pylab.grid()
-pylab.show()
+pylab.show()"""
