@@ -2,12 +2,8 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
-\usepackage{algorithmic}
-\usepackage{algorithm}
 \usepackage{tikz}
 \usepackage{graphicx}
-\usepackage{mdframed}
-\usepackage{paralist}
 \usepackage{listings}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
@@ -67,7 +63,7 @@ Using \eqref{segments} and \eqref{generalrelation}, we have that \begin{equation
 \subsection*{Number of control points}
 Every B\'{e}zier segments has the same degree $p$ as the original curve, resulting in every segment needing $p+1$ control points. As the inner control points are each used by two B\'{e}zier segments, one of the segment has $p+1$ unique control points, while the others have $p$ unique control points each. Using \eqref{segmentrelation}, we have that the total number of control points are given by\begin{equation*}
 \begin{aligned}
-\#\mathrm{total} &= p + 1 + p(n + 1 - 1)\\
+\#\mathrm{total} &= p + 1 + p(n + 1 - p - 1)\\
 &= p(n + 1 - p) + 1.
 \end{aligned}
 \end{equation*}
