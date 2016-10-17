@@ -150,6 +150,27 @@ which is what we wanted to determine.
 %	\includegraphics[scale=0.6]{bspline}
 %\end{figure}
 
+\section*{Task 3}
+In this task we construct a circle using second degree NURBS and the De Boor algorithm. The code can be seen in Appendix I.\\
+The following nine control points are used \begin{equation*}
+\{(-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0)\},
+\end{equation*}
+consisting of the vertices and midpoints of the unit square centered at $(0, 0)$ and its sides, respectively. As we want the curve to pass through the midpoints of the vertices and as these, apart from the starting point, will be situated at $\frac{1}{4}$, $\frac{2}{4}$ and $\frac{3}{4}$ of the whole curve, we need to include these points in the knot sequence with multiplicity two.\\
+As we also want the curve to be clamped, this results in the knot sequence \begin{equation*}
+\{0, 0, 0, 0.25, 0.25, 0.5, 0.5, 0.75, 0.75, 1, 1, 1\}.
+\end{equation*}
+If all weights are set to one, we end up with a B-spline curve with the following appearance
+
+\begin{figure}[h!]
+	\includegraphics[scale=0.6]{splinecircle}
+\end{figure}
+In order to obtain an actual circle, we change the weights corresponding to the control points located in the vertices of the square. By trial and error, we find the correct weights $\omega$ to be \begin{equation*}
+\omega= \{1, 0.707, 1, 0.707, 1, 0.707, 1, 0.707, 1\},
+\end{equation*}
+so the weights corresponding to to the vertices of are approximately $\frac{\sqrt{2}}{2}$. The circle can be seen below.
+\begin{figure}[h!]
+	\includegraphics[scale=0.6]{nurbscircle}
+\end{figure}
 \section*{Do-over Homework 2 Task 5}
 \underline{\textbf{Claim 1:}} The Lagrange form is invariant under all affine maps.\\
 \\
