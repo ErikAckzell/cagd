@@ -150,6 +150,36 @@ which is what we wanted to determine.
 %	\includegraphics[scale=0.6]{bspline}
 %\end{figure}
 
+\section*{Task 2}
+In this task we interpolate the points $(0,0)$, $(6,10)$, $(7,10.2)$ and $(9,8)$ using B-Spline curves of degree $2$ and $3$. The steps we need to take are
+1. Set the parameter values $t_0,...,t_s$ using one of the three methods Uniform parametrization, Chord length parametrization or Centripetal parametrization.
+2. Calculate the knots using either the Uniformly spaced method or the de Boor averaging method.	
+3. Get the control points by solving the system
+\begin{equation*}
+\left(\begin{array}{cccc}
+N^p_0(t_0) & N^p_1(t_0) & \cdots & N^p_s(t_0)\\
+N^p_0(t_1) & N^p_1(t_1) & \cdots & N^p_s(t_1)\\
+\vdots & \vdots & & \vdots\\
+N^p_0(t_s) & N^p_1(t_s) & \cdots & N^p_s(t_s)\\
+\end{array}\right)\left(\begin{array}{c}
+b_0\\
+b_1\\
+\vdots \\
+b_s
+\end{array}\right) = \left(\begin{array}{c}
+d_0\\
+d_1\\
+\vdots \\
+d_s
+\end{array}\right).
+\end{equation*}
+
+where $N^p_j$ is the $j$:th basis function of degree $p$, $b_j$ the control points and $d_j$ the interpolation points. 
+
+\begin{figure}[h!]
+	%\includegraphics[scale=0.5]{task2}
+\end{figure}
+
 \section*{Task 3}
 In this task we construct a circle using second degree NURBS and the de Boor algorithm. The code can be seen in Appendix I.\\
 The following nine control points are used \begin{equation*}
@@ -162,15 +192,28 @@ As we also want the curve to be clamped, this results in the knot sequence \begi
 If all weights are set to one, we end up with a B-spline curve with the following appearance
 
 \begin{figure}[h!]
-	\includegraphics[scale=0.6]{splinecircle}
+	\includegraphics[scale=0.5]{splinecircle}
 \end{figure}
 In order to obtain an actual circle, we change the weights corresponding to the control points located in the vertices of the square. By trial and error, we find the correct weights $\omega$ to be \begin{equation*}
 \omega= \{1, 0.707, 1, 0.707, 1, 0.707, 1, 0.707, 1\},
 \end{equation*}
 so the weights corresponding to the vertices of the square are approximately $\frac{\sqrt{2}}{2}$. The circle can be seen below.
 \begin{figure}[h!]
-	\includegraphics[scale=0.6]{nurbscircle}
+	\includegraphics[scale=0.5]{nurbscircle}
 \end{figure}
+
+\newpage
+\section*{Task 4}
+In this task we contructed a rational Bézier curve, with the Rational de Casteljau Algorithm, with varying weights. The control points that we used were $(0,0)$, $(4,3)$, $(3,1)$ and $(5,1)$ and the weights were originally $[1,2,3,4]$. 
+
+To evaluate a rational Bézier curve in $\mathbb{R}^2$ we must first project the points to $\mathbb{R}^3$ using homogeneous coordinates. Thereafter the algorithm proceeds as usual. Before we plot, we traverse the coordinates to be cartesian again to be able to plot the curve on the plane. 
+
+The first plot demonstrate how the curve changes when the third weight varies between $0$ and $6$. The second plot demonstrates the changes when the last weight varies between $0$ and $8$. What is clear is that if the weight is $0$ we neglect the relevant control point.
+
+\begin{figure}[h!]
+	\includegraphics[scale=0.5]{task4}
+\end{figure}
+
 \section*{Do-over Homework 2 Task 5}
 \underline{\textbf{Claim 1:}} The Lagrange form is invariant under all affine maps.\\
 \\

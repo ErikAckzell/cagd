@@ -1,6 +1,7 @@
 import scipy
 from matplotlib import pyplot as plt
 import numpy as np
+import math
 
 
 class Bspline(object):
@@ -31,6 +32,10 @@ class Bspline(object):
         self.dim = scipy.shape(controlpoints)[1]
 
     def __call__(self, u):
+        d = self.get_deBoor_array(u)
+        return d[-1, -1]
+
+    def get_deBoor_array(self, u):
         index = self.get_index(u)
         r = self.get_mult(index, u)
         current_controlpoints = self.get_controlpoints(index, r, u)
@@ -44,7 +49,7 @@ class Bspline(object):
                 a = (u - self.grid[left])\
                     / (self.grid[right] - self.grid[left])
                 d[s,j] = (1-a)*d[s-1,j-1] + a*d[s-1,j]
-        return d[-1, -1]
+        return d
 
     def get_mult(self, index, u):
         if u == self.grid[index]:
@@ -90,7 +95,7 @@ class Bspline(object):
             index = (self.grid > u).argmax() - 1
         return index
 
-    def plot(self, title, numPlots, filename=None, points=300, controlpoints=True, markSeq=False, clamped=False):
+    def plot(self, title, filename=None, points=300, controlpoints=True, markSeq=False, clamped=False):
         """
         Method to plot the spline.
         points (int): number of points to use when plotting the spline
@@ -204,7 +209,7 @@ if __name__ == '__main__':
             'and Control Points Marked in the Plot'
     bspline.plot(title, filename='task2', markSeq=True, clamped=True)
     """
-    """
+    #"""
     ### Task 4 ###
     controlpoints = scipy.array([[0, 0],
                                  [-4, 0],
@@ -214,19 +219,18 @@ if __name__ == '__main__':
                                  [1, 5.5],
                                  [1, 0]])
     grid = scipy.array([0,0,0,0,0,1/3,2/3,1,1,1,1,1])
-    #bspline = Bspline(grid, controlpoints, 4)
+    bspline = Bspline(grid, controlpoints, 4)
     breaks = [1/3,2/3]
     curves = []
     curve = beziercurve(controlpoints=controlpoints)
 
     # Plot the original curve and its control points
     tlist = scipy.linspace(0, 1, 300)
-    fig = plt.figure()
-    ax1 = fig.add_subplot(211)
-    ax1.plot(*zip(*[curve(t) for t in tlist]), label='Original B-Spline curve')
-    ax1.plot(*zip(*curve.controlpoints), 'o--', label='Controlpoints')
-    lgd1 = ax1.legend(loc='upper left', bbox_to_anchor=(1, 1))
-    ax1.set_title('B-spline Curve Defined by the Grid $\{0,0,0,0,0,1/3,2/3,1,1,1,1,1\}$ \n with its Control Points')
+    fig, axarr = plt.subplots(2,1)
+    axarr[0].plot(*zip(*[bspline(t) for t in tlist]), label='Original B-Spline curve')
+    axarr[0].plot(*zip(*bspline.controlpoints), 'o--', label='Controlpoints')
+    lgd1 = axarr[0].legend(loc='upper left', bbox_to_anchor=(1, 1))
+    axarr[0].set_title('B-spline Curve Defined by the Grid $\{0,0,0,0,0,1/3,2/3,1,1,1,1,1\}$ \n with its Control Points')
 
     # Create each Bézier segment
     for stop in breaks:
@@ -236,20 +240,19 @@ if __name__ == '__main__':
         if stop == breaks[-1]: curves.append(curve)
 
     # Plot each segment and its control points
-    ax2 = fig.add_subplot(212)
     for i,curve in enumerate(curves):
         print(curve.controlpoints)
-        ax2.plot(*zip(*[curve(t) for t in tlist]), label='Bézier curve {}'.format(i))
-        ax2.plot(*zip(*curve.controlpoints), 'o--', label='Controlpoints - curve {}'.format(i))
-    lgd2 = ax2.legend(loc='upper left', bbox_to_anchor=(1, 1))
+        axarr[1].plot(*zip(*[curve(t) for t in tlist]), label='Bézier curve {}'.format(i))
+        axarr[1].plot(*zip(*curve.controlpoints), 'o--', label='Controlpoints - curve {}'.format(i))
+    lgd2 = axarr[1].legend(loc='upper left', bbox_to_anchor=(1, 1))
     title = 'The B-Spline Curve Above as Bézier Segment with \n' \
             'Corresponding Control Points'
-    ax2.set_title(title)
+    axarr[1].set_title(title)
     fig.subplots_adjust(hspace=.5)
     fig.savefig('Task4', bbox_extra_artists=(lgd1,lgd2), bbox_inches='tight')
     plt.show()
-    """
     #"""
+    """
     ### Task 5 ###
     grid = scipy.array([0,1/11,2/11,3/11,4/11,5/11,6/11,7/11,8/11,9/11,10/11,1])
     controlpoints = scipy.array([[0,0],
@@ -260,12 +263,25 @@ if __name__ == '__main__':
                                  [1,-1],
                                  [3,1],
                                  [9,-1]])
-    for i in range(len(controlpoints) - 1):
+    fig, axarr = plt.subplots(3, 2,sharex='col', sharey='row')
+    title = 'B-spline Curves Defined by the Grid \n $\{0,1/11,2/11,3/11,4/11,5/11,6/11,7/11,8/11,9/11,10/11,1\}$ and \n' \
+            'Different Control Points'
+    fig.suptitle(title)
+    points = 300
+
+    for i in range(5):
         if i > 0:
             controlpoints[-i] = controlpoints[i-1]
-            print('i=', i, controlpoints)
         bspline = Bspline(grid, controlpoints, 3)
-        title = 'B-spline Curve Defined by the Grid \n $\{0,1/11,2/11,3/11,4/11,5/11,6/11,7/11,8/11,9/11,10/11,1\}$ and \n' \
-            'Control Points Marked on the Curve.'
-        bspline.plot(title, filename='task5', clamped=False)
-    #"""
+
+        ulist = scipy.linspace(bspline.grid[bspline.degree], bspline.grid[-bspline.degree], points)
+        col = 0 if i % 2 == 0 \
+            else 1
+        row = math.floor(i/2)
+        axarr[row,col].plot(*zip(*[bspline(u) for u in ulist]))
+        axarr[row,col].plot(*zip(*bspline.controlpoints), 'o--')
+    fig.subplots_adjust(top=0.85)
+    fig.delaxes(axarr[-1,-1])
+    fig.savefig('task5', bbox_inches='tight')
+    plt.show()
+    """

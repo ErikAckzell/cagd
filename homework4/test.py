@@ -287,11 +287,14 @@ if __name__ == '__main__':
     bspline.plot('title', 1)
     for b in breaks:
         d = bspline.get_deBoor_array(b)
+        print(d)
         beziercontrolpts = scipy.vstack((scipy.array([0, 0]),
                                          scipy.array([d[i, i] for i in range(len(d))])))
+        print(beziercontrolpts)
         bcurve = beziercurve(controlpoints=beziercontrolpts)
-        plt.plot(*zip(*[d[i, i] for i in range(len(d))]))
+        plt.plot(*zip(*beziercontrolpts), 'o--')
         plt.plot(*zip(*[bcurve(t) for t in scipy.linspace(0, 1, 100)]))
+        plt.show()
 
 #    print(beziercontrolpts)
 #    print(d)
