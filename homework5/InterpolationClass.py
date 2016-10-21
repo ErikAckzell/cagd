@@ -157,20 +157,14 @@ class interpolation:
                 knots = np.append(knots, u)
         return knots
 
-def get_controlpoints(points, tvals, knots):
+def get_controlpoints(points, tvals, knots, degree):
     s = len(points) - 1
     N = scipy.zeros((s+1,s+1))
     bspline = Bspline(knots)
     for i in range(s+1): # columns
         basisfunc = bspline.get_basisfunc(degree,i)
-        plt.plot(np.linspace(0,1,300),[basisfunc(t) for t in np.linspace(0,1,300)], label='i={}'.format(i))
-
         for j in range(s+1): # rows
-            if j==s:
-                print('--',tvals[j])
             N[j,i] = basisfunc(tvals[j])
-    plt.legend()
-    plt.show()
     print(N)
     controlpoints = np.linalg.lstsq(N,points)[0]
     print(len(controlpoints))
@@ -183,14 +177,26 @@ if __name__ == '__main__':
                           [6,10],
                           [7,10.2],
                           [9,8]])
-    degree = 3
-    interpolate = interpolation(points, [0,1])
-    parameters = interpolate.get_parameter_values(methods[2])
+    degree = [2,3]
+    interpolate = interpolation(points, [0, 1])
+    fig, axarr = plt.subplots(len(degree),1, figsize=(8,8))
+    for i, deg in enumerate(degree):
+        for method in methods:
+            parameters = interpolate.get_parameter_values(method)
+            knots = interpolate.get_knots(deg,parameters)
+            controlpoints = get_controlpoints(points,parameters,knots, deg)
+            bspline = Bspline(knots,controlpoints=controlpoints)
 
-    knots = interpolate.get_knots(degree,parameters)
-    print('knots', knots)
-    controlpoints = get_controlpoints(points,parameters,knots)
-    print('controlpoints', controlpoints)
-    bspline = Bspline(knots,controlpoints=controlpoints)
-    print(bspline(knots[3]), bspline(knots[3]-0.05))
-    bspline.plot(points=points)
+            ulist = scipy.linspace(knots[0], knots[-1], 300)
+            ulist = [u for u in ulist if bspline.has_full_support(u=u)]
+            axarr[i].plot(*zip(*[bspline(u=u) for u in ulist]), label=method)
+            axarr[i].plot(*zip(*controlpoints), 'o--', label='{} - Control Points'.format(method))
+            axarr[i].plot(*zip(*[bspline(u=u+1e-10) for u in knots]), 'x', label='{} - Knots'.format(method))
+        axarr[i].plot(*zip(*points), 'o', label='Interpolation Points')
+        axarr[i].set_title('B-Spline Curve of Degree {} that Interpolates \n '
+                 '$(0,0$, $(6,10)$, $(7,10.2)$ and $(9,8)$'.format(deg))
+        lgd = axarr[i].legend(loc='upper left', bbox_to_anchor=(1, 1))
+        axarr[i].grid()
+    fig.tight_layout()
+    fig.savefig('task2', bbox_extra_artists=(lgd,), bbox_inches='tight')
+    plt.show()

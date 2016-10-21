@@ -151,10 +151,7 @@ which is what we wanted to determine.
 %\end{figure}
 
 \section*{Task 2}
-In this task we interpolate the points $(0,0)$, $(6,10)$, $(7,10.2)$ and $(9,8)$ using B-Spline curves of degree $2$ and $3$. The steps we need to take are
-1. Set the parameter values $t_0,...,t_s$ using one of the three methods Uniform parametrization, Chord length parametrization or Centripetal parametrization.
-2. Calculate the knots using either the Uniformly spaced method or the de Boor averaging method.	
-3. Get the control points by solving the system
+In this task we interpolate the points $(0,0)$, $(6,10)$, $(7,10.2)$ and $(9,8)$ using B-Spline curves of degree $2$ and $3$. First we needed to set the parameter values $t_0,...,t_s$ using one of the three methods \textit{Uniform Parametrization}, \textit{Chord Length Parametrization} or \textit{Centripetal Parametrization}. Then we calculated the knots followed by solving the system below to find the control points.
 \begin{equation*}
 \left(\begin{array}{cccc}
 N^p_0(t_0) & N^p_1(t_0) & \cdots & N^p_s(t_0)\\
@@ -174,10 +171,10 @@ d_s
 \end{array}\right).
 \end{equation*}
 
-where $N^p_j$ is the $j$:th basis function of degree $p$, $b_j$ the control points and $d_j$ the interpolation points. 
+where $N^p_j$ is the $j$:th basis function of degree $p$, $b_j$ the control points and $d_j$ the interpolation points. The code written for this task can be found in Appendix II.
 
 \begin{figure}[h!]
-	%\includegraphics[scale=0.5]{task2}
+	\includegraphics[scale=0.5]{task2}
 \end{figure}
 
 \section*{Task 3}
@@ -208,7 +205,7 @@ In this task we contructed a rational Bézier curve, with the Rational de Castel
 
 To evaluate a rational Bézier curve in $\mathbb{R}^2$ we must first project the points to $\mathbb{R}^3$ using homogeneous coordinates. Thereafter the algorithm proceeds as usual. Before we plot, we traverse the coordinates to be cartesian again to be able to plot the curve on the plane. 
 
-The first plot demonstrate how the curve changes when the third weight varies between $0$ and $6$. The second plot demonstrates the changes when the last weight varies between $0$ and $8$. What is clear is that if the weight is $0$ we neglect the relevant control point.
+The first plot demonstrate how the curve changes when the third weight varies between $0$ and $6$. The second plot demonstrates the changes when the last weight varies between $0$ and $8$. What is clear is that if the weight is $0$ we neglect the relevant control point. The code written for this task can be found in Appendix III.
 
 \begin{figure}[h!]
 	\includegraphics[scale=0.5]{task4}
@@ -276,5 +273,13 @@ Thus, for $x\in[a, b]$, $\varphi(p(x)) = \sum_{i = 0}^{1}x^i\varphi(c_i)$ iff $x
 \newpage
 \section*{Appendix I}
 \lstinputlisting{NURBSClass.py}
+
+\newpage
+\section*{Appendix II}
+\lstinputlisting{InterpolationClass.py}
+
+\newpage
+\section*{Appendix III}
+\lstinputlisting{RationalBezier.py}
 
 \end{document}
