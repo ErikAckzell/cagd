@@ -194,6 +194,15 @@ class beziercurve(object):
 if __name__ == '__main__':
 #    """
     ### Task 1 ###
+    def evaluate_bspline_surface(D, uknots, vknots, u_degree, v_degree, u, v):
+        # for every column, evaluate corresponding bspline
+        b = scipy.zeros((D.shape[1], D.shape[2]))
+        for i in range(D.shape[1]):
+            vspline = Bspline(vknots, D[:, i], v_degree)
+            b[i] = vspline(v)
+        uspline = Bspline(uknots, b, u_degree)
+        return uspline(u)
+
     D_initial = scipy.array([[0.7, -0.4],
                              [1.0, -0.4],
                              [2.5, -1.2],
@@ -215,6 +224,13 @@ if __name__ == '__main__':
     degree = 3
     ugrid = scipy.linspace(uknots[0], uknots[-1], 200)
     vgrid = scipy.copy(ugrid)
+    print(evaluate_bspline_surface(D=D,
+                                   uknots=uknots,
+                                   vknots=vknots,
+                                   u_degree=degree,
+                                   v_degree=degree,
+                                   u=1.5,
+                                   v=1.5))
 
 #    """
 
