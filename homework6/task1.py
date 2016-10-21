@@ -1,8 +1,8 @@
 import scipy
 from matplotlib import pyplot as plt
 import numpy as np
-import math
-
+from matplotlib import pyplot
+from mpl_toolkits.mplot3d import Axes3D
 
 class Bspline(object):
     def __init__(self, grid, controlpoints, degree):
@@ -222,7 +222,7 @@ if __name__ == '__main__':
     uknots = scipy.array([1, 1, 1, 1, 6 / 5, 7 / 5, 8 / 5, 9 / 5, 2, 2, 2, 2])
     vknots = scipy.copy(uknots)
     degree = 3
-    ugrid = scipy.linspace(uknots[0], uknots[-1], 200)
+    ugrid = scipy.linspace(uknots[0], uknots[-1], 50)
     vgrid = scipy.copy(ugrid)
     print(evaluate_bspline_surface(D=D,
                                    uknots=uknots,
@@ -231,6 +231,11 @@ if __name__ == '__main__':
                                    v_degree=degree,
                                    u=1.5,
                                    v=1.5))
+    Z = scipy.zeros((len(vgrid), len(ugrid), 3))
+    for i, v in enumerate(vgrid):
+        for j, u in enumerate(ugrid):
+            #Z[i, j] =
+            pass
 
 #    """
 
