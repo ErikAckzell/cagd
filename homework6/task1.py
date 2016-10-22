@@ -1,8 +1,8 @@
 import scipy
 from matplotlib import pyplot as plt
-import numpy as np
 from matplotlib import pyplot
 from mpl_toolkits.mplot3d import Axes3D
+
 
 class Bspline(object):
     def __init__(self, grid, controlpoints, degree):
@@ -59,15 +59,18 @@ class Bspline(object):
 
     def get_controlpoints(self, index, r, u):
         """
-        Method to obtain the current control points, d_{i-n}, ..., d_i, for de Boor's algorithm, where n is the degree
-        and i is the index of the interval for which u lies in: [u_i,u_{i+1}). If u=u_i and u_i has multiplicity r the
-        current control points changes to be d_{i-n},...,d_{i-r-1},d_{i-r}.
+        Method to obtain the current control points, d_{i-n}, ..., d_i, for de
+        Boor's algorithm, where n is the degree and i is the index of the
+        interval for which u lies in: [u_i,u_{i+1}). If u=u_i and u_i has
+        multiplicity r the current control points changes to be
+        d_{i-n},...,d_{i-r-1},d_{i-r}.
         index (int): the index depending on the point u at which to evaluate
         the spline (see get_index method).
         """
         if r > self.degree:
             # The curve is clamped if we have n+1 knots at the endpoints
-            # A knot can not have multiciply higher than the degree unless it is at the end points
+            # A knot can not have multiciply higher than the degree unless it
+            # is at the end points
             if u == self.grid[0]:
                 # startpoint
                 current_controlpoints = self.controlpoints[:self.degree + 1]
@@ -75,7 +78,8 @@ class Bspline(object):
                 # endpoint
                 current_controlpoints = self.controlpoints[-(self.degree + 1):]
         else:
-            current_controlpoints = self.controlpoints[index - self.degree:index - r + 1]
+            current_controlpoints = self.controlpoints[index-self.degree:
+                                                       index - r + 1]
         return current_controlpoints
 
 
@@ -100,7 +104,8 @@ class Bspline(object):
         points (int): number of points to use when plotting the spline
         controlpoints (bool): if True, plots the control points as well
         markSeq (bool): if true, marks each spline sequence in the plot
-        clamped (bool): if true, skips the multiples in the endpoints when each sequence is marked
+        clamped (bool): if true, skips the multiples in the endpoints
+        when each sequence is marked
         """
         fig = plt.figure()
         ax = fig.add_subplot(111)
@@ -111,15 +116,17 @@ class Bspline(object):
                 start, end = 0, len(self.grid) - 1
             for i in range(start, end):
                 ulist = scipy.linspace(self.grid[i], self.grid[i+1], points)
-                ax.plot(*zip(*[self(u) for u in ulist]), label='B-Spline between knots {} and {}'.format(self.grid[i],
-                                                                                                          self.grid[i+1]
-                                                                                                          ))
+                ax.plot(*zip(*[self(u) for u in ulist]),
+                        label='B-Spline between knots {} and {}'.format(
+                            self.grid[i],
+                            self.grid[i+1]))
         else:
             # list of u values for which to plot
             if clamped:
                 ulist = scipy.linspace(self.grid[0], self.grid[-1], points)
             else:
-                ulist = scipy.linspace(self.grid[self.degree], self.grid[-self.degree], points)
+                ulist = scipy.linspace(self.grid[self.degree],
+                                       self.grid[-self.degree], points)
             ax.plot(*zip(*[self(u) for u in ulist]), label='B-Spline Curve')
         if controlpoints:  # checking whether to plot control points
             ax.plot(*zip(*self.controlpoints), 'o--', label='Control Points')
@@ -127,82 +134,22 @@ class Bspline(object):
         lgd = ax.legend(loc='upper left', bbox_to_anchor=(1,1))
         ax.set_title(title)
         if filename:
-            fig.savefig(filename, bbox_extra_artists=(lgd,), bbox_inches='tight')
+            fig.savefig(filename, bbox_extra_artists=(lgd,),
+                        bbox_inches='tight')
         plt.show()
 
 
-class beziercurve(object):
-    """
-    This is a class for Bézier curves.
-    """
-
-    def __init__(self, controlpoints):
-        """
-        An object of the class is initialized with a set of control points in
-        the plane.
-        """
-        self.controlpoints = controlpoints
-        self.xlow = min(self.controlpoints[:, 0])
-        self.xhigh = max(self.controlpoints[:, 0])
-        self.ylow = min(self.controlpoints[:, 1])
-        self.yhigh = max(self.controlpoints[:, 1])
-
-    def __call__(self, t):
-        """
-        This method returns the point on the line for some t.
-        """
-        deCasteljauArray = self.get_deCasteljauArray(t)
-        return deCasteljauArray[-1, -2:]
-
-    def subdivision(self, t):
-        """
-        This method implements subdivision at t.
-        """
-        # getting the de Casteljau array using t
-        deCasteljauArray = self.get_deCasteljauArray(t)
-        # extracting the new controlpoints from the array
-        controlpoints1 = scipy.array([deCasteljauArray[i, 2 * i:2 * i + 2]
-                                      for i in range(len(self.controlpoints))])
-        controlpoints2 = scipy.array([deCasteljauArray[-1, 2 * i:2 * i + 2]
-                                      for i in range(len(self.controlpoints))])
-        controlpoints2 = controlpoints2[::-1]
-        curve1 = beziercurve(controlpoints1)
-        curve2 = beziercurve(controlpoints2)
-
-        return (curve1, curve2)
-
-    def get_deCasteljauArray(self, t):
-        """
-        This method calculates and returns a matrix with the lower left corner
-        containing the de Casteljau array, calculated for the specified t.
-        """
-        # initializing the array
-        deCasteljauArray = scipy.column_stack((
-            np.copy(self.controlpoints),
-            scipy.zeros((len(self.controlpoints),
-                         2 * len(self.controlpoints) - 2))
-        ))
-        # filling the array
-        for i in range(1, len(deCasteljauArray)):
-            for j in range(1, i + 1):
-                deCasteljauArray[i, j * 2:j * 2 + 2] = (
-                    (1 - t) * deCasteljauArray[i - 1, (j - 1) * 2:(j - 1) * 2 + 2] +
-                    t * deCasteljauArray[i, (j - 1) * 2:(j - 1) * 2 + 2])
-        return deCasteljauArray
+def evaluate_bspline_surface(D, uknots, vknots, u_degree, v_degree, u, v):
+    # for every column, evaluate corresponding bspline
+    b = scipy.zeros((D.shape[1], D.shape[2]))
+    for i in range(D.shape[1]):
+        vspline = Bspline(vknots, D[:, i], v_degree)
+        b[i] = vspline(v)
+    uspline = Bspline(uknots, b, u_degree)
+    return uspline(u)
 
 
 if __name__ == '__main__':
-#    """
-    ### Task 1 ###
-    def evaluate_bspline_surface(D, uknots, vknots, u_degree, v_degree, u, v):
-        # for every column, evaluate corresponding bspline
-        b = scipy.zeros((D.shape[1], D.shape[2]))
-        for i in range(D.shape[1]):
-            vspline = Bspline(vknots, D[:, i], v_degree)
-            b[i] = vspline(v)
-        uspline = Bspline(uknots, b, u_degree)
-        return uspline(u)
-
     D_initial = scipy.array([[0.7, -0.4],
                              [1.0, -0.4],
                              [2.5, -1.2],
@@ -224,38 +171,24 @@ if __name__ == '__main__':
     degree = 3
     ugrid = scipy.linspace(uknots[0], uknots[-1], 50)
     vgrid = scipy.copy(ugrid)
-    print(evaluate_bspline_surface(D=D,
-                                   uknots=uknots,
-                                   vknots=vknots,
-                                   u_degree=degree,
-                                   v_degree=degree,
-                                   u=1.5,
-                                   v=1.5))
-    Z = scipy.zeros((len(vgrid), len(ugrid), 3))
+
+    X = scipy.zeros((len(vgrid), len(ugrid)))
+    Y = scipy.zeros((len(vgrid), len(ugrid)))
+    Z = scipy.zeros((len(vgrid), len(ugrid)))
     for i, v in enumerate(vgrid):
         for j, u in enumerate(ugrid):
-            #Z[i, j] =
-            pass
+            z = evaluate_bspline_surface(D=D,
+                                         uknots=uknots,
+                                         vknots=vknots,
+                                         v_degree=degree,
+                                         u_degree=degree,
+                                         u=u,
+                                         v=v)
 
-#    """
+            X[i, j] = z[0]
+            Y[i, j] = z[1]
+            Z[i, j] = z[2]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    figure = pyplot.figure()
+    axis = pyplot.subplot(111, projection='3d')
+    axis.plot_wireframe(X, Y, Z)
