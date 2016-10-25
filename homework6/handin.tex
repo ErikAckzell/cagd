@@ -49,6 +49,14 @@ In this task we plot a 3D cone using NURBS. The code can be seen in Appendix I a
 \begin{figure}[h!]
 	\includegraphics[scale=0.3]{nurbscone}
 \end{figure}
+\newpage
+\section*{Homework 4 task 4 do-over}
+In this task we subdivide a 4th degree B-spline into its B\'{e}zier segments. This is done by first subdividing the B-spline at its internal knots into separate B-splines and then constructing B\'{e}zier segments using the control points of these separate B-splines.\\
+The B\'{e}zier curves all have the the same degree as the original B-spline, namely 4. The original B-spline and its segments can be seen in the plot below and the code used to construct it can be seen in Appendix I.
+\begin{figure}[h!]
+	\includegraphics[scale=0.4]{task4_doover}
+\end{figure}
+
 
 \newpage
 \section*{Appendix I}
@@ -58,4 +66,6 @@ In this task we plot a 3D cone using NURBS. The code can be seen in Appendix I a
 \subsection*{Code for task 4}
 \lstinputlisting[firstline=7]{task4.py}
 
+\subsection*{Code for Homework 4 task 4 do-over}
+\lstinputlisting[firstline=8]{homework4task4_doover.py}
 \end{document}
