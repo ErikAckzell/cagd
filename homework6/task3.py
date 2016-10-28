@@ -75,8 +75,13 @@ if __name__ == '__main__':
     figure = pyplot.figure()
     axis = pyplot.subplot(111, projection='3d')
     axis.plot_wireframe(X, Y, Z)
-    for p in datapoints:
-        axis.scatter(p[0], p[1], p[2], c='r', marker='o')
-    for c in controlpoints:
-        axis.scatter(c[0], c[1], c[2], c='b', marker='d')
+    axis.scatter(datapoints[:, 0], datapoints[:, 1], datapoints[:, 2],
+                 c='r', marker='o', label='data')
+    axis.scatter(controlpoints[:, 0], controlpoints[:, 1], controlpoints[:, 2],
+                 c='b', marker='d', label='control points')
+    axis.legend()
+    axis.set_title('Approximating plane to set of data points')
+    axis.set_xlabel('x')
+    axis.set_ylabel('y')
+    axis.set_zlabel('z')
     pyplot.show()

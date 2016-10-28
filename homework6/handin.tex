@@ -43,6 +43,17 @@ In this task we plot a 3D Bretzel using B-splines. The code can be seen in Appen
 	\includegraphics[scale=0.3]{bretzel3d}
 \end{figure}
 \newpage
+
+\section*{Task 3}
+In this task we determine the control points for a planar B\'{e}zier surface to approximate a set of data points. A figure of the surface and its control points, together with the data points can be seen in the figure below and the code can be seen in Appendix I.\\
+The control points were determined by first using least squares to determine the coefficients $a, b, c$ of the plane
+\begin{equation*}
+z = ax + by + c,
+\end{equation*}
+and the plane was then evaluated at the corners of the minimal rectangle covering the projection of the data points onto the plane in order to obtain the control points.
+\begin{figure}[h!]
+	\includegraphics[scale=0.4]{plane}
+\end{figure}
 \section*{Task 4}
 In this task we plot a 3D cone using NURBS. The code can be seen in Appendix I and the figure can be seen below.\\
 
@@ -62,6 +73,9 @@ The B\'{e}zier curves all have the the same degree as the original B-spline, nam
 \section*{Appendix I}
 \subsection*{Code for task 1}
 \lstinputlisting[firstline=7]{task1.py}
+
+\subsection*{Code for task 3}
+\lstinputlisting[firstline=8]{task3.py}
 
 \subsection*{Code for task 4}
 \lstinputlisting[firstline=7]{task4.py}
